@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
+import SymptomForm from "./form";
 
 function Hero() {
-  const [symptoms, setSymptoms] = useState("");
   const [result, setResult] = useState("");
-  const [confidence, setConfidence] = useState(null); // Tambah state confidence
+  const [confidence, setConfidence] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (symptomArray) => {
     try {
-      const symptomArray = symptoms.split(",").map((s) => s.trim());
       const response = await axios.post("http://localhost:8000/predict", {
         symptoms: symptomArray,
       });
 
       setResult(response.data.disease_id);
-      setConfidence(response.data.confidence); // Set confidence dari response
+      setConfidence(response.data.confidence);
     } catch (error) {
       console.error(error);
       setResult("Gagal memprediksi. Cek gejala atau API.");
-      setConfidence(null); // Reset confidence jika terjadi error
+      setConfidence(null);
     }
   };
 
@@ -30,7 +28,7 @@ function Hero() {
     >
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-80"
-        style={{ backgroundImage: "url('assets/wallpp.jpg')" }}
+        style={{ backgroundImage: "url('public/wallpp.jpg')" }}
       ></div>
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/20 via-red-500/50 to-transparent"></div>
 
@@ -42,26 +40,10 @@ function Hero() {
           memprediksi penyakit yang Anda alami.
         </p>
 
-        <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              className="w-full bg-white text-slate-500 p-3 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:ring-1"
-              placeholder="Masukkan gejala..."
-              value={symptoms}
-              onChange={(e) => setSymptoms(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="bg-red-500 text-white font-bold rounded-md px-6 py-3 hover:bg-red-600 transition duration-300 cursor-pointer"
-            >
-              Check
-            </button>
-          </div>
-        </form>
+        <SymptomForm onSubmit={handleSubmit} />
 
         {result && (
-          <div className="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+          <div className="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded max-w-md mx-auto">
             <p>
               Hasil Prediksi: <strong>{result}</strong>
             </p>
