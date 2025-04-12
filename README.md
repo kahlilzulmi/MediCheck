@@ -1,17 +1,25 @@
-<<<<<<< HEAD
-# React + Vite
+MediCheck – Smart Disease Prediction Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MediCheck is an interactive web application that allows users to predict potential diseases based on their input symptoms. Powered by a machine learning model, the system provides real-time predictions along with a confidence score that reflects the model’s certainty.
 
-Currently, two official plugins are available:
+Key Features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Symptom input in Bahasa Indonesia, with predictions returned in real-time.
 
-## Expanding the ESLint configuration
+Confidence score for each prediction to indicate reliability.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-# MediCheck
-Website that can predict disease based on symptoms.
->>>>>>> 1bcee6f496a55ac6482646cc15138d98ff8fc111
+Additional information on the predicted disease, including common symptoms, treatment options, and prevention tips.
+
+History of user symptom checks and predictions, stored locally on the device (no login required).
+
+Responsive, user-friendly interface built with React and Tailwind CSS.
+
+Tech Stack:
+
+Frontend: React.js (Vite), Tailwind CSS
+
+Backend: FastAPI (Python) with a trained machine learning model
+
+Database: JSON-based static data for disease information
+
+Language support: Fully localized for Bahasa Indonesia input/output
