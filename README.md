@@ -4,7 +4,7 @@ MediCheck is an interactive web application that allows users to predict potenti
 
 Key Features:
 
-Symptom input in Bahasa Indonesia, with predictions returned in real-time.
+Symptom input in Indonesia Languages, with predictions returned in real-time.
 
 Confidence score for each prediction to indicate reliability.
 
