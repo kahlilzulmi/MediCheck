@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Hapus token
+    window.location.href = '/'; // Arahkan ke halaman login
+  };
+  
   return (
     <header className="bg-transparent sticky backdrop-blur-xs top-0 left-0 w-full items-center z-10 border-b-2 border-slate-300 flow-root">
       <div className="container">
@@ -42,36 +52,39 @@ function Header() {
                 </li>
               </ul>
             </nav>
-            <div className="relative ml-6">
+        {/* User Profile Menu */}
+        <div className="relative ml-6">
               <button
-                id="settings-btn"
-                className="rounded-full hover:bg-gray-300 focus:outline-none"
+                onClick={toggleMenu}
+                className="rounded-full hover:bg-gray-200 focus:outline-none w-10 h-10 flex items-center justify-center"
               >
-                <span className="fa-stack fa-xl w-10 h-10">
-                  <i
-                    className="fa-solid fa-gear fa-stack-1x fa-inverse"
-                    style={{ color: 'black' }}
-                  ></i>
+                <span className="fa-stack fa-xl">
+                  <i className="fa-solid fa-circle fa-stack-2x text-gray-300"></i>
+                  <i className="fa-solid fa-user fa-stack-1x text-black"></i>
                 </span>
               </button>
-              <div
-                id="settings-menu"
-                className="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg p-4"
-              >
-                <div className="flex items-center space-x-3">
-                  <span className="fa-stack fa-2x w-10 h-10">
-                    <i className="fa-solid fa-circle fa-stack-2x"></i>
-                    <i className="fa-solid fa-user fa-stack-1x fa-inverse"></i>
-                  </span>
-                  <span className="text-gray-800 font-medium">User Name</span>
+
+              {/* Dropdown */}
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg p-4 z-50">
+                  <div className="flex items-center space-x-3">
+                    <span className="fa-stack fa-2x w-10 h-10">
+                      <i className="fa-solid fa-circle fa-stack-2x text-gray-300"></i>
+                      <i className="fa-solid fa-user fa-stack-1x text-white"></i>
+                    </span>
+                    <span className="text-gray-800 font-medium">User Name</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="mt-4 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Logout
+                  </button>
                 </div>
-                <button className="mt-4 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                  Login
-                </button>
-              </div>
-            </div>
+              )}
           </div>
         </div>
+      </div>
       </div>
     </header>
   );
