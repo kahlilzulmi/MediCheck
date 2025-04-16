@@ -1,21 +1,18 @@
 import React from "react";
-import "./App.css";
-import Header from "./components/header";
-import Hero from "./components/hero";
-import Riwayat from "./components/riwayat";
-import Article from "./components/article";
-import Footer from "./components/footer";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./pages/login";
+import Home from "./pages/home";
+
+
 function App() {
   return (
-    <div>
-      <Header />
-      <Hero />
-      <div className="h-50"></div>
-      <Riwayat />
-      <div className="h-50"></div>
-      <Article/>
-      <Footer/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        {/* Tambahkan route lain sesuai kebutuhan */}
+      </Routes>
+    </Router>
   );
 }
 
