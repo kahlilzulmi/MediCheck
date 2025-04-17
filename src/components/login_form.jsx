@@ -29,9 +29,9 @@ const LoginForm = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://source.unsplash.com/random/1920x1080"
+          src="public\medical-stethoscope-white-surface.jpg"
           alt=""
-          className="w-full h-full object-cover filter blur-lg brightness-50"
+          className="w-full h-full object-cover filter blur-sm brightness-50"
         />
       </div>
 
@@ -69,20 +69,20 @@ const LoginForm = () => {
           </div>
           <div className="flex items-center justify-between gap-8">
             <button
-              className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-red-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Sign In
             </button>
             <a
-              className="inline-block align-baseline font-bold text-sm text-cyan-500 hover:text-cyan-800"
+              className="inline-block align-baseline font-bold text-sm text-red-950 hover:text-amber-600"
               href="#"
             >
               Forgot Password?
             </a>
           </div>
         </form>
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {error && <p className="text-yellow-500 mt-4">{error}</p>}
       </div>
     </div>
   );
