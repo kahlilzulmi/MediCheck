@@ -30,7 +30,7 @@ function Hero() {
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-80"
         style={{ backgroundImage: "url('public/wallpp.jpg')" }}
       ></div>
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/20 via-red-500/50 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-white/50 via-red-300/50 to-transparent"></div>
 
       <div className="relative text-center text-white z-10 px-4 max-w-lg mx-auto">
         <h1 className="font-bold text-5xl mb-4">Cek Kesehatan Anda.</h1>

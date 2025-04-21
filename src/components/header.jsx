@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+  
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -56,7 +64,7 @@ function Header() {
         <div className="relative ml-6">
               <button
                 onClick={toggleMenu}
-                className="rounded-full hover:bg-gray-200 focus:outline-none w-10 h-10 flex items-center justify-center"
+                className="rounded-full hover:bg-gray-500 focus:outline-none w-10 h-10 flex items-center justify-center"
               >
                 <span className="fa-stack fa-xl">
                   <i className="fa-solid fa-circle fa-stack-2x text-gray-300"></i>
@@ -72,7 +80,7 @@ function Header() {
                       <i className="fa-solid fa-circle fa-stack-2x text-gray-300"></i>
                       <i className="fa-solid fa-user fa-stack-1x text-white"></i>
                     </span>
-                    <span className="text-gray-800 font-medium">User Name</span>
+                    <span className="text-gray-800 font-medium">{username || "Guest"}</span>
                   </div>
                   <button
                     onClick={handleLogout}
