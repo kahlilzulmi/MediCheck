@@ -2,37 +2,35 @@ import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post("http://localhost:8000/login", {
         username,
         password,
       });
-  
+
       // Simpan token JWT
       const token = response.data.access_token;
       localStorage.setItem("token", token);
-  
+
       // Decode token dan simpan username
       const decoded = jwtDecode(token);
       localStorage.setItem("username", decoded.sub); // "sub" adalah username dari backend
-  
+
       // Redirect
       window.location.href = "/home";
     } catch (err) {
       console.error("Error details:", err.response || err.message || err);
       setError("Login failed, please try again");
-    }    
-    
+    }
   };
-  
+
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       {/* Background Image */}
@@ -45,7 +43,7 @@ const LoginForm = () => {
       </div>
 
       {/* Login Form */}
-      <div className="relative z-10 bg-white p-8 rounded-md shadow-lg">
+      <div className="relative z-10 bg-white p-12 rounded-md shadow-lg">
         <h1 className="text-xl font-bold mb-4">Login</h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">

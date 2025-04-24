@@ -195,12 +195,7 @@ function SymptomForm({ onSubmit }) {
           value={symptomInput}
           onChange={handleInputChange}
         />
-        <button
-          type="submit"
-          className="bg-red-500 text-white font-bold rounded-md px-4 py-3 hover:bg-blue-600 transition duration-300"
-        >
-          Tambah
-        </button>
+  
       </form>
 
       {suggestions.length > 0 && (
@@ -217,28 +212,39 @@ function SymptomForm({ onSubmit }) {
         </ul>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4 mt-4">
-        {symptomList.map((symptom, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center bg-gray-100 p-3 rounded-md shadow-sm"
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4 mt-4">
+  {symptomList.map((symptom, index) => (
+    <div
+      key={index}
+      className="relative bg-gray-100 p-3 rounded-md shadow-sm hover:bg-red-200 transition duration-300"
+    >
+      <div className="flex justify-between items-start">
+        <span className="text-slate-600">{symptom}</span>
+        <button
+          onClick={() => handleRemoveSymptom(index)}
+          className="text-red-500 hover:text-red-700 font-bold ml-2 cursor-pointer"
+          title="Hapus gejala"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 0 24 24"
+            width="20px"
+            fill="#5f6368"
           >
-            <span className="text-slate-600">{symptom}</span>
-            <button
-              onClick={() => handleRemoveSymptom(index)}
-              className="text-red-500 hover:text-red-700 font-bold ml-2"
-              title="Hapus gejala"
-            >
-              ❌
-            </button>
-          </div>
-        ))}
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M18.3 5.71a1 1 0 0 0-1.42 0L12 10.59 7.12 5.71a1 1 0 0 0-1.42 1.42L10.59 12 5.71 16.88a1 1 0 1 0 1.42 1.42L12 13.41l4.88 4.88a1 1 0 0 0 1.42-1.42L13.41 12l4.88-4.88a1 1 0 0 0 0-1.41z"/>
+          </svg>
+        </button>
       </div>
+    </div>
+  ))}
+</div>
 
       {symptomList.length > 0 && (
         <button
           onClick={handlePredict}
-          className="bg-red-500 text-white font-bold rounded-md px-6 py-3 hover:bg-red-600 transition duration-300 w-full"
+          className="bg-red-500 text-white font-bold rounded-md px-6 py-3 hover:bg-red-600 transition duration-300 w-full cursor-pointer"
         >
           Prediksi Penyakit
         </button>

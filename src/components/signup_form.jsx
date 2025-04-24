@@ -4,7 +4,7 @@ import axios from "axios";
 const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleSignup = async (e) => {
@@ -39,11 +39,14 @@ const SignupForm = () => {
         />
       </div>
 
-      <div className="relative z-10 bg-white p-8 rounded-md shadow-lg">
+      <div className="relative z-10 bg-white p-12 rounded-md shadow-lg ">
         <h1 className="text-xl font-bold mb-4">Sign Up</h1>
         <form onSubmit={handleSignup}>
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
+            <label
+              className="block text-gray-700 font-bold mb-2"
+              htmlFor="username"
+            >
               Username
             </label>
             <input
@@ -57,7 +60,10 @@ const SignupForm = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 font-bold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -71,7 +77,7 @@ const SignupForm = () => {
             />
           </div>
           <button
-            className="bg-amber-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-red-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Sign Up
