@@ -19,7 +19,8 @@ Fully localized for Bahasa Indonesia input/output
 3. Open terminal, make virtual environment. Type `python -m venv venv`
 4. Activate the virtual environment. Type `venv\Scripts\activate`
 5. In virtual environment, Install required dependencies. Type `pip install -r requirements.txt`
-6. Run the backend using `uvicorn main.app:app --reload`
-7. Running the Frontend using other cmd. Type `npm run dev`
+6. Run the backend using `uvicorn app.main:app --reload`
+7. Running the Frontend using other cmd. Type `npm install`
+8. Type `npm run dev`
 
 
