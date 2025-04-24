@@ -1,11 +1,11 @@
 ## MediCheck – Smart Disease Prediction Website
 MediCheck is an interactive web application that allows users to predict potential diseases based on their input symptoms. Powered by a machine learning model, the system provides real-time predictions along with a confidence score that reflects the model’s certainty.
 ## Key Features:
-1.  Symptom input in Indonesia Languages, with predictions returned in real-time.
-2.  Confidence score for each prediction to indicate reliability.
+1. Symptom input in Indonesia Languages, with predictions returned in real-time.
+2. Confidence score for each prediction to indicate reliability.
 3. Additional information on the predicted disease, including common symptoms, treatment options, and prevention tips.
 4. History of user symptom checks and predictions, login required.
-5.Responsive, user-friendly interface built with React and Tailwind CSS.
+5. Responsive, user-friendly interface built with React and Tailwind CSS.
 ## Tech Stack:
 - Frontend: React.js (Vite), Tailwind CSS
 - Backend: FastAPI (Python) with a trained machine learning model
