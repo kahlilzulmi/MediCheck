@@ -8,8 +8,8 @@ MediCheck is an interactive web application that allows users to predict potenti
 5. Responsive, user-friendly interface built with React and Tailwind CSS.
 ## Tech Stack:
 - Frontend: React.js (Vite), Tailwind CSS
-- Backend: FastAPI (Python) with a trained machine learning model
-- Database: JSON-based static data for disease information
+- Backend: FastAPI (Python) with a Large Language Model via Ollama using Gemma 3 model
+- Database: MongoDB
 ## Language support: 
 Fully localized for Bahasa Indonesia input/output
 
