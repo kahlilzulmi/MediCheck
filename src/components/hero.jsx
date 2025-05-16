@@ -4,20 +4,16 @@ import SymptomForm from "./form";
 
 function Hero() {
   const [result, setResult] = useState("");
-  const [confidence, setConfidence] = useState(null);
 
   const handleSubmit = async (symptomArray) => {
     try {
       const response = await axios.post("http://localhost:8000/predict", {
         symptoms: symptomArray,
       });
-
-      setResult(response.data.disease_id);
-      setConfidence(response.data.confidence);
+      setResult(response.data.disease || response.data.disease_id || response.data.response || "Tidak diketahui");
     } catch (error) {
       console.error(error);
       setResult("Gagal memprediksi. Cek gejala atau API.");
-      setConfidence(null);
     }
   };
 
@@ -40,20 +36,7 @@ function Hero() {
           memprediksi penyakit yang Anda alami.
         </p>
 
-        <SymptomForm onSubmit={handleSubmit} />
-
-        {result && (
-          <div className="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded max-w-md mx-auto">
-            <p>
-              Hasil Prediksi: <strong>{result}</strong>
-            </p>
-            {confidence !== null && (
-              <p className="text-sm mt-2 text-green-700">
-                Tingkat akurasi: <strong>{confidence.toFixed(2)}%</strong>
-              </p>
-            )}
-          </div>
-        )}
+        <SymptomForm onSubmit={handleSubmit} result={result} />
       </div>
     </section>
   );
