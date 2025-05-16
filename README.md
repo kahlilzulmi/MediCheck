@@ -23,5 +23,6 @@ Fully localized for Bahasa Indonesia input/output
 7. Run the backend using `uvicorn app.main:app --reload`
 8. Running the Frontend using other cmd. Type `npm install`
 9. Type `npm run dev`
+10. Dont forgot to install the ollama model too. Activate the model using `ollama serve`
 
 
