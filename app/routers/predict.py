@@ -17,7 +17,7 @@ class Symptomclass(BaseModel):
 def predict_with_llm(s: Symptomclass):
     # Format prompt
     symptoms_str = ", ".join(s.symptoms)
-    prompt = f"Dari gejala yang disebutkan: {symptoms_str}, apa penyakit yang paling mungkin?"
+    prompt = f"Dari gejala yang disebutkan: {symptoms_str}, apa penyakit yang paling mungkin?, berikan jawaban singkat dari yang paling mungkin, pisahkan dengan koma, dan jangan sertakan penjelasan apapun, hanya berikan jawaban penyakit nya. Contoh: penyakit1, penyakit2, penyakit3"
 
     # Call Ollama LLM using /api/generate (not /api/chat)
     payload = {
