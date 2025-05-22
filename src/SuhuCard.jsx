@@ -31,8 +31,8 @@ function SuhuCard() {
       textAlign: "center",
       justifyItems: "center"
     }}>
-      <h3>Suhu Ruangan</h3>
-      <p style={{ fontSize: "2rem", margin: 0 }}>
+      <h3 style={{color: "black"}}>Suhu Ruangan</h3>
+      <p style={{ fontSize: "2rem", margin: 0, color: "black" }}>
         {suhu ? suhu + " °C" : "Loading..."}
       </p>
     </div>

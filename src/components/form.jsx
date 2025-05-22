@@ -27,8 +27,8 @@ function SymptomForm({ onSubmit, onSymptomChange, result }) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto relative justify-center">
-      <form onSubmit={handlePredict} className="flex flex-col gap-4 mb-2 relative">
+    <div className="w-full max-w-md mx-auto relative items-center justify-center">
+      <form onSubmit={handlePredict} className="flex flex-col gap-4 mb-2 relative items-center justify-center">
         <input
           type="text"
           className="w-full bg-white text-slate-500 p-3 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:ring-1"

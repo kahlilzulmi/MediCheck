@@ -7,7 +7,7 @@ function Footer() {
         <div className="flex flex-wrap items-start">
           <div className="w-full px-4 mb-12 text-slate-500 font-medium md:w-1/2">
             <h2 className="font-bold text-4xl text-slate-500 mb-5">
-              Abdurrahman
+              Abdurrahman & Friends
             </h2>
             <h3 className="font-bold mb-2 text-2xl">Hubungi Kami</h3>
             <p>5049221005@student.its.ac.id</p>
@@ -71,7 +71,7 @@ function Footer() {
             </a>
           </div>
           <p className="text-center text-slate-300">
-            &copy; 2025 Abdurrahman. All rights reserved.
+            &copy; 2025 Abdurrahman & Friends. All rights reserved.
           </p>
         </div>
       </div>
