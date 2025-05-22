@@ -16,11 +16,13 @@ Fully localized for Bahasa Indonesia input/output
 ## Instructions
 1. Donwload code zip
 2. extract the zip folder
-3. Open terminal, make virtual environment. Type `python -m venv venv`
-4. Activate the virtual environment. Type `venv\Scripts\activate`
-5. In virtual environment, Install required dependencies. Type `pip install -r requirements.txt`
-6. Run the backend using `uvicorn app.main:app --reload`
-7. Running the Frontend using other cmd. Type `npm install`
-8. Type `npm run dev`
+3. Open folder in vscode with `code .`
+4. Open terminal, make virtual environment. Type `python -m venv venv`
+5. Activate the virtual environment. Type `venv\Scripts\activate`
+6. In virtual environment, Install required dependencies. Type `pip install -r requirements.txt`
+7. Run the backend using `uvicorn app.main:app --reload`
+8. Running the Frontend using other cmd. Type `npm install`
+9. Type `npm run dev`
+10. Dont forgot to install the ollama model too. Activate the model using `ollama serve`
 
 
