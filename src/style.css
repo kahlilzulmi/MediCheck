@@ -1,0 +1,62 @@
+:root {
+  --primary-red: #9e222c;
+  --header-bg: #e8e7ea;
+  --btn-dark: #1d262e;
+}
+
+body {
+  background-image: url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(78, 11, 17, 0.9);
+  background-blend-mode: overlay;
+  color: white;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Progress bar sederhana */
+.progress-bar {
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #d1d5db; /* gray-300 */
+  position: relative;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  left: 0; top: 0;
+  width: var(--progress, 0%);
+  border-radius: 9999px;
+  background-color: var(--color, #9e222c);
+  transition: width 0.4s ease;
+}
+
+.progress-bar.yellow::after {
+  --color: #facc15; /* yellow-400 */
+}
+
+.progress-bar.green::after {
+  --color: #22c55e; /* green-500 */
+}
+
+/* Hover states for nav links */
+nav a:hover {
+  color: var(--primary-red);
+}
+
+/* Button and input focus states */
+button:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-red);
+}
+
+.text-soft-blue {
+  color: #d9e5ec;
+}
+
