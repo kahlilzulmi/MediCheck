@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function Riwayat({ history = [] }) {
+function Riwayat() {
+  const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchRiwayat() {
+      setLoading(true); // Pastikan loading true di awal fetch
+      try {
+        const res = await fetch("http://localhost:8000/riwayat"); // URL API Eksplisit
+        if (!res.ok) {
+          // Tangani HTTP errors seperti 404 atau 500
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        console.log("Fetched history data:", data); // Log data yang diterima
+        setHistory(data);
+      } catch (err) {
+        console.error("Failed to fetch history:", err); // Log error jika terjadi
+        setHistory([]); // Set history kosong jika ada error
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRiwayat();
+  }, []); // Array dependensi kosong, fetch saat komponen mount
+
   return (
     <section id="riwayat" className="pt-36">
       <div className="container mx-auto px-4">
@@ -14,11 +39,19 @@ function Riwayat({ history = [] }) {
                 <th className="py-3 px-6 text-left">No</th>
                 <th className="py-3 px-6 text-left">Tanggal</th>
                 <th className="py-3 px-6 text-left">Gejala</th>
+                {/* Tambahkan kolom Suhu jika ingin ditampilkan */}
+                {/* <th className="py-3 px-6 text-left">Suhu (°C)</th> */}
                 <th className="py-3 px-6 text-left">Prediksi Penyakit</th>
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {history.length === 0? (
+              {loading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-6">
+                    Memuat data...
+                  </td>
+                </tr>
+              ) : history.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="text-center py-6">
                     Belum ada riwayat pengecekan.
@@ -26,10 +59,16 @@ function Riwayat({ history = [] }) {
                 </tr>
               ) : (
                 history.map((item, index) => (
-                  <tr key={index} className="border-b">
+                  <tr key={item._id || index} className="border-b">
                     <td className="py-3 px-6">{index + 1}</td>
                     <td className="py-3 px-6">{item.tanggal}</td>
-                    <td className="py-3 px-6">{item.gejala.join(", ")}</td>
+                    <td className="py-3 px-6">
+                      {Array.isArray(item.gejala)
+                        ? item.gejala.join(", ")
+                        : item.gejala}
+                    </td>
+                    {/* Contoh jika ingin menampilkan suhu dari data MongoDB asli: */}
+                    {/* <td className="py-3 px-6">{item.suhu ? item.suhu.toFixed(2) : '-'}</td> */}
                     <td className="py-3 px-6">{item.prediksi}</td>
                   </tr>
                 ))

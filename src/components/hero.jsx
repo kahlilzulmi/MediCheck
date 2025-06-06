@@ -5,11 +5,10 @@ import SymptomForm from "./form";
 function Hero() {
   const [result, setResult] = useState("");
 
-  const handleSubmit = async (symptomArray) => {
+  // Perbaiki agar menerima object { symptoms, suhu }
+  const handleSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/predict", {
-        symptoms: symptomArray,
-      });
+      const response = await axios.post("http://localhost:8000/predict", data);
       setResult(
         response.data.disease ||
           response.data.disease_id ||
