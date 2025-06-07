@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function SuhuCard() {
+function SuhuCard({ onSuhuChange }) {
   const [suhu, setSuhu] = useState(null);
 
   useEffect(() => {
@@ -9,7 +9,9 @@ function SuhuCard() {
       try {
         const res = await axios.get("http://localhost:8000/suhu");
         if (res.data.length > 0) {
-          setSuhu(res.data[0].suhu.toFixed(2));
+          const suhuValue = parseFloat(res.data[0].suhu);
+          setSuhu(suhuValue.toFixed(2));
+          if (onSuhuChange) onSuhuChange(suhuValue);
         }
       } catch (err) {
         console.error(err);
@@ -17,9 +19,9 @@ function SuhuCard() {
     };
 
     fetchSuhu();
-    const interval = setInterval(fetchSuhu, 5000);
+    const interval = setInterval(fetchSuhu, 20000); // 20 detik
     return () => clearInterval(interval);
-  }, []);
+  }, [onSuhuChange]);
 
   return (
     <div style={{
