@@ -5,11 +5,8 @@
 }
 
 body {
-  background-image: url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg');
   background-size: cover;
   background-position: center;
-  background-color: rgba(78, 11, 17, 0.9);
-  background-blend-mode: overlay;
   color: white;
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
