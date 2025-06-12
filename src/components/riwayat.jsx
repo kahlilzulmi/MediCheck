@@ -8,7 +8,12 @@ function Riwayat() {
     async function fetchRiwayat() {
       setLoading(true); // Pastikan loading true di awal fetch
       try {
-        const res = await fetch("http://localhost:8000/riwayat"); // URL API Eksplisit
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:8000/riwayat", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!res.ok) {
           // Tangani HTTP errors seperti 404 atau 500
           throw new Error(`HTTP error! status: ${res.status}`);
