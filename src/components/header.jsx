@@ -60,12 +60,12 @@ function Header() {
               onClick={toggleMenu}
               className="inline-block bg-[var(--primary-red)] text-white px-4 py-1 rounded hover:bg-red-800 transition"
             >
-              Akun
+              {username || "Akun"}
             </button>
 
-            {menuOpen && (
+            {menuOpen && username && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg p-4 z-50">
-                <div className="font-medium mb-2">{username || "Guest"}</div>
+                <div className="font-medium mb-2">{username}</div>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-2 py-2 text-sm text-red-600 hover:bg-gray-100 rounded"

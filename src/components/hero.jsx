@@ -29,7 +29,7 @@ function Hero() {
     backgroundImage: "url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg')",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundColor: 'rgba(87, 3, 10, 0.9)',
+    backgroundColor: 'rgba(87, 3, 10, 0.6)',
     backgroundBlendMode: 'overlay',
   }}
 >
