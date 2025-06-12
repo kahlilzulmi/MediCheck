@@ -6,6 +6,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -15,95 +16,91 @@ const LoginForm = () => {
         password,
       });
 
-      // Simpan token JWT
       const token = response.data.access_token;
       localStorage.setItem("token", token);
 
-      // Decode token dan simpan username
       const decoded = jwtDecode(token);
-      localStorage.setItem("username", decoded.sub); // "sub" adalah username dari backend
+      localStorage.setItem("username", decoded.sub);
 
-      // Redirect
       window.location.href = "/home";
     } catch (err) {
       console.error("Error details:", err.response || err.message || err);
-      setError("Login failed, please try again");
+      setError("Login gagal, silakan coba lagi.");
     }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="public\medical-stethoscope-white-surface.jpg"
-          alt=""
-          className="w-full h-full object-cover filter blur-sm brightness-50"
-        />
-      </div>
+    <div 
+      className="flex items-center justify-center min-h-screen bg-[var(--header-bg)] text-[var(--btn-dark)]"
+      style={{
+        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg')",
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
+      {/* Form container with backdrop blur and shadow */}
+      <div className="bg-white/10 backdrop-blur-md p-10 rounded-xl shadow-2xl w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center mb-6 text-black">
+          Selamat Datang di{" "}
+          <span className="text-black">Medi</span>
+          <span className="text-[var(--primary-red)]">Check</span>
+        </h1>
+        <p className="text-sm text-center mb-8 text-gray-700">
+          Silakan masuk untuk melanjutkan ke dashboard
+        </p>
 
-      {/* Login Form */}
-      <div className="relative z-10 bg-white p-12 rounded-md shadow-lg">
-        <h1 className="text-xl font-bold mb-4">Login</h1>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="username"
-            >
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-sm mb-1 font-bold text-black">
               Username
             </label>
             <input
-              className="appearance-none border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full"
-              id="username"
               type="text"
+              id="username"
+              name="username"
               placeholder="Username"
+              required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              required
+              className="w-full px-4 py-2 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[var(--primary-red)]"
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
+
+          <div>
+            <label htmlFor="password" className="block text-sm mb-1 font-bold text-black">
+              Kata Sandi
             </label>
             <input
-              className="appearance-none border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full"
-              id="password"
               type="password"
-              placeholder="Password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
+              className="w-full px-4 py-2 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[var(--primary-red)]"
             />
           </div>
-          <div className="flex items-center justify-between gap-8">
-            <button
-              className="bg-red-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Sign In
-            </button>
-            <a
-              className="inline-block align-baseline font-bold text-sm text-red-950 hover:text-amber-600"
-              href="#"
-            >
-              Forgot Password?
-            </a>
-          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-[var(--primary-red)] text-white font-semibold py-2 rounded-md hover:bg-red-800 transition"
+          >
+            Masuk
+          </button>
         </form>
-        {error && <p className="text-yellow-500 mt-4 ">{error}</p>}
-        <div className="mt-6 text-clip text-xs">
-          <p className="text-gray-500">
-            Don't have an account?{" "}
-            <a href="/signup" className="text-red-500 hover:text-red-700">
-              Sign Up
-            </a>
-          </p>
-        </div>
+
+        {error && (
+          <p className="text-yellow-400 mt-4 text-center text-sm">{error}</p>
+        )}
+
+        <p className="text-xs text-center mt-6 text-gray-600">
+          Belum punya akun?{" "}
+          <a href="/signup" className="underline hover:text-black">
+            Daftar di sini
+          </a>
+        </p>
       </div>
     </div>
   );

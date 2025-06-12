@@ -32,19 +32,20 @@ function Hero() {
 
   return (
     <section className="flex items-center justify-center flex-grow h-[calc(100vh-60px)] px-6 bg-[rgba(255,255,255,0)]">
-      <div className="text-center p-10 rounded-lg shadow-xl max-w-xl w-full backdrop-blur-md bg-white/20">
-        <h1 className="text-3xl font-bold mb-4 text-white">
-          Cek Kondisi Anda Sekarang!
-        </h1>
-        <p className="text-sm mb-6 text-white">
-          Cukup masukkan gejala yang Anda rasakan. MediCheck akan membantu
-          memprediksi penyakit Anda secara real-time dengan dukungan teknologi
-          cerdas.
-        </p>
+  <div className="text-center p-10 rounded-lg shadow-xl max-w-xl w-full backdrop-blur-md bg-white/20">
+    <h1 className="text-3xl font-bold mb-4 text-white">
+      Cek Kondisi Anda Sekarang!
+    </h1>
+    <p className="text-sm mb-6 text-white">
+      Cukup masukkan gejala yang Anda rasakan. MediCheck akan membantu
+      memprediksi penyakit Anda secara real-time dengan dukungan teknologi
+      cerdas.
+    </p>
 
-        <SymptomForm onSubmit={handleSubmit} result={result} />
-      </div>
-    </section>
+    <SymptomForm onSubmit={handleSubmit} result={result} />
+  </div>
+</section>
+
   );
 }
 
