@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SuhuCard from "../SuhuCard";
 
-SuhuCard
-
 function SymptomForm({ onSubmit, onSymptomChange, result }) {
   const [symptomInput, setSymptomInput] = useState("");
+  const [suhu, setSuhu] = useState(null);
 
   useEffect(() => {
     if (onSymptomChange) onSymptomChange(symptomInput);
@@ -14,6 +13,10 @@ function SymptomForm({ onSubmit, onSymptomChange, result }) {
     setSymptomInput(e.target.value);
   };
 
+  const handleSuhuChange = (val) => {
+    setSuhu(val);
+  };
+
   const handlePredict = (e) => {
     e.preventDefault();
     // Split symptoms by comma, strip whitespace, and filter empty
@@ -21,8 +24,8 @@ function SymptomForm({ onSubmit, onSymptomChange, result }) {
       .split(",")
       .map((s) => s.trim().toLowerCase())
       .filter((s) => s.length > 0);
-    if (normalizedSymptoms.length > 0) {
-      onSubmit(normalizedSymptoms);
+    if (normalizedSymptoms.length > 0 && suhu !== null) {
+      onSubmit({ symptoms: normalizedSymptoms, suhu: parseFloat(suhu) });
     }
   };
 
@@ -37,14 +40,14 @@ function SymptomForm({ onSubmit, onSymptomChange, result }) {
           onChange={handleInputChange}
         />
 
-        <SuhuCard />
+        <SuhuCard onSuhuChange={handleSuhuChange} />
         <button
           className={`bg-gray-700 text-white font-bold rounded-md px-6 py-3 transition duration-300 w-full ${
-            symptomInput.trim().length === 0
+            symptomInput.trim().length === 0 || suhu === null
               ? "cursor-not-allowed bg-gray-700"
               : "cursor-pointer hover:bg-black"
           }`}
-          disabled={symptomInput.trim().length === 0}
+          disabled={symptomInput.trim().length === 0 || suhu === null}
           type="submit"
         >
           Prediksi Penyakit

@@ -8,8 +8,16 @@ function Riwayat() {
     async function fetchRiwayat() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:8000/riwayat");
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:8000/riwayat", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) {
+          // Tangani HTTP errors seperti 404 atau 500
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const data = await res.json();
         console.log("Fetched history data:", data);
         setHistory(data);
