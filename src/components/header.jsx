@@ -49,7 +49,7 @@ function Header() {
             <a href="#hero" className="hover:underline font-semibold">
               Beranda
             </a>
-            <a href="#riwayat" className="hover:underline">
+            <a href="#riwayat" className="hover:underline font-semibold">
               Riwayat
             </a>
           </nav>

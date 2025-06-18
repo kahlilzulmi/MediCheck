@@ -31,7 +31,7 @@ const SignupForm = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[var(--header-bg)] text-[var(--btn-dark)] px-6"
     style={{
-        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg')",
+        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('/medicheck.jpg')",
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

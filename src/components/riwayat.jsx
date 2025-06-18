@@ -26,9 +26,12 @@ function Riwayat() {
   return (
     <section
       id="riwayat"
+      className="flex flex-col items-center justify-start min-h-[calc(100vh-0px)] w-full px-6 py-10 bg-red-900 bg-opacity-70 scroll-mt-15"
     >
+
+
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        <h2 className="text-2xl font-bold text-center text-white mb-6">
           Riwayat Pengecekan
         </h2>
 

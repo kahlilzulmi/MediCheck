@@ -26,7 +26,7 @@ function Hero() {
     id="hero"
   className="flex items-center justify-center flex-grow min-h-screen px-6"
   style={{
-    backgroundImage: "url('https://d3uhejzrzvtlac.cloudfront.net/compro/articleMobile/197_19_ketahui-seputar-manfaat-dan-persiapan-medical-check-up.jpg')",
+    backgroundImage: "url('/medicheck.jpg')",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundColor: 'rgba(87, 3, 10, 0.6)',
