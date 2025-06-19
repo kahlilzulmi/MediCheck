@@ -9,7 +9,7 @@ function Riwayat() {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8000/riwayat", {
+        const res = await fetch("https://api.testmedi.online/riwayat", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

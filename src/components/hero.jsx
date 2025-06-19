@@ -10,7 +10,7 @@ function Hero() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8000/predict",
+        "https://api.testmedi.online/predict",
         data,
         {
           headers: {

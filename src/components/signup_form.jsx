@@ -10,7 +10,7 @@ const SignupForm = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/signup", {
+      await axios.post("https://api.testmedi.online/signup", {
         username,
         password,
       });

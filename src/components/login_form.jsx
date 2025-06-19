@@ -11,7 +11,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8000/login", {
+      const response = await axios.post("https://api.testmedi.online/login", {
         username,
         password,
       });
