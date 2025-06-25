@@ -6,3 +6,4 @@ class PredictionRecord(BaseModel):
     suhu: float
     result: str
     timestamp: str  # ISO format string
+    username: str  # username user yang melakukan prediksi

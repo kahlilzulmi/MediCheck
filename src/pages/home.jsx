@@ -6,15 +6,15 @@ import Hero from '../components/hero'
 
 function Home() {
   return (
-  <div>
-    <Header/>
-    <Hero/>
-    <div className='h-50'></div>
-    <Riwayat/>
-    <div className='h-50'></div>
-    <Footer/>
-  </div>
-  )
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
+        <Hero />
+        <Riwayat />
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
-export default Home
+export default Home;

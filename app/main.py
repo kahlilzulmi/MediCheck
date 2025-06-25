@@ -11,7 +11,7 @@ app = FastAPI()
 # Tambahkan ini untuk mengizinkan frontend mengakses backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Sesuaikan dengan port React kamu
+    allow_origins=["https://testmedi.online", "https://app.www.testmedi.online"],  # Sesuaikan dengan port React kamu
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

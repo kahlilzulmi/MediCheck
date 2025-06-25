@@ -8,7 +8,16 @@ function Hero() {
   // Perbaiki agar menerima object { symptoms, suhu }
   const handleSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/predict", data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://api.testmedi.online/predict",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setResult(
         response.data.disease ||
           response.data.disease_id ||
@@ -22,7 +31,17 @@ function Hero() {
   };
 
   return (
-    <section className="flex items-center justify-center flex-grow h-[calc(100vh-60px)] px-6 bg-[rgba(255,255,255,0)]">
+    <section
+      id="hero"
+      className="flex items-center justify-center flex-grow min-h-screen px-6"
+      style={{
+        backgroundImage: "url('/medicheck.jpg')",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundColor: 'rgba(87, 3, 10, 0.6)',
+        backgroundBlendMode: 'overlay',
+      }}
+    >
   <div className="text-center p-10 rounded-lg shadow-xl max-w-xl w-full backdrop-blur-md bg-white/20">
     <h1 className="text-3xl font-bold mb-4 text-white">
       Cek Kondisi Anda Sekarang!

@@ -10,89 +10,102 @@ const SignupForm = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/signup", {
+      await axios.post("https://api.testmedi.online/signup", {
         username,
         password,
       });
 
-      setSuccess("Signup successful! You can now login.");
+      setSuccess("Signup berhasil! Silakan login.");
       setError("");
 
-      // Redirect ke halaman login setelah 2 detik (opsional)
       setTimeout(() => {
         window.location.href = "/";
       }, 2000);
     } catch (err) {
       console.error("Signup error:", err.response || err.message || err);
-      setError("Signup failed. Username may already exist.");
+      setError("Gagal daftar. Username mungkin sudah terdaftar.");
       setSuccess("");
     }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="absolute inset-0 z-0">
-        <img
-          src="public/medical-stethoscope-white-surface.jpg"
-          alt=""
-          className="w-full h-full object-cover filter blur-sm brightness-50"
-        />
-      </div>
+    <div className="flex items-center justify-center min-h-screen bg-[var(--header-bg)] text-[var(--btn-dark)] px-6"
+    style={{
+        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('/medicheck.jpg')",
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}>
+      <div className="bg-white/10 backdrop-blur-md p-10 rounded-xl shadow-2xl w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Selamat Datang di{" "}
+          <span className="text-black">Medi</span>
+          <span className="text-[var(--primary-red)]">Check</span>
+        </h1>
+        <p className="text-sm text-center mb-8">
+          Daftarkan akun Anda untuk mulai memprediksi kondisi kesehatan
+        </p>
 
-      <div className="relative z-10 bg-white p-12 rounded-md shadow-lg ">
-        <h1 className="text-xl font-bold mb-4">Sign Up</h1>
-        <form onSubmit={handleSignup}>
-          <div className="mb-4">
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div>
             <label
-              className="block text-gray-700 font-bold mb-2"
               htmlFor="username"
+              className="block text-sm mb-1 font-medium"
             >
-              Username
+              Nama Pengguna
             </label>
             <input
-              className="appearance-none border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full"
               id="username"
+              name="username"
               type="text"
-              placeholder="Username"
+              placeholder="Nama Pengguna"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              className="w-full px-4 py-2 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[var(--primary-red)]"
             />
           </div>
-          <div className="mb-4">
+
+          <div>
             <label
-              className="block text-gray-700 font-bold mb-2"
               htmlFor="password"
+              className="block text-sm mb-1 font-medium"
             >
-              Password
+              Kata Sandi
             </label>
             <input
-              className="appearance-none border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full"
               id="password"
+              name="password"
               type="password"
-              placeholder="Password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="w-full px-4 py-2 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[var(--primary-red)]"
             />
           </div>
+
           <button
-            className="bg-red-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
+            className="w-full bg-[var(--primary-red)] text-white font-semibold py-2 rounded-md hover:bg-red-800 transition"
           >
-            Sign Up
+            Daftar
           </button>
         </form>
-        {error && <p className="text-yellow-500 mt-4">{error}</p>}
-        {success && <p className="text-green-500 mt-4">{success}</p>}
-        <div className="mt-6 text-clip text-xs">
-          <p className="text-gray-500">
-            Already have an account?{" "}
-            <a href="/" className="text-red-500 hover:text-red-700">
-              Login
-            </a>
-          </p>
-        </div>
+
+        {error && (
+          <p className="text-yellow-500 mt-4 text-sm text-center">{error}</p>
+        )}
+        {success && (
+          <p className="text-green-500 mt-4 text-sm text-center">{success}</p>
+        )}
+
+        <p className="text-xs text-center mt-6 text-gray-600">
+          Sudah punya akun?{" "}
+          <a href="/" className="underline hover:text-black">
+            Masuk di sini
+          </a>
+        </p>
       </div>
     </div>
   );
