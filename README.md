@@ -14,6 +14,7 @@ MediCheck is an interactive web application designed to predict potential diseas
 
 - **Frontend:** React.js (Vite), Tailwind CSS
 - **Backend:** FastAPI (Python) with a Large Language Model via Ollama using Gemma 3 model
+- **Backend:** FastAPI (Python) with a Large Language Model via Ollama using a Gemma model
 - **Database:** MongoDB
 
 ## Language Support
@@ -25,8 +26,8 @@ Fully localized for Bahasa Indonesia input/output.
 1. **Download the Code:** Download the code as a ZIP archive.
 2. **Extract the Archive:** Extract the contents of the ZIP folder to a location on your computer.
 3. **Open in VS Code:** Open the extracted folder in Visual Studio Code using the command `code .`.
-4. **Create Virtual Environment:** Open a terminal in VS Code and create a virtual environment using the command: `python -m venv venv`.
-5. **Activate Virtual Environment:** Activate the virtual environment by running: `venv\Scripts\activate`.
+4. **Create Virtual Environment:** Open a terminal in VS Code and create a virtual environment using the command: `python -m venv .venv`.
+5. **Activate Virtual Environment:** Activate the virtual environment by running: `.venv\Scripts\activate`.
 6. **Install Dependencies:** Install the required Python dependencies from the `requirements.txt` file using: `pip install -r requirements.txt`.
 7. **Run the Backend:** Start the FastAPI backend server with the command: `uvicorn app.main:app --reload`.
 8. **Install Frontend Dependencies:** In a separate terminal, navigate to the project directory and install the required Node.js dependencies using: `npm install`.
