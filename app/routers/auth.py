@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from pymongo import MongoClient
-from typing import Optional
+from typing import Dict
 
 # Inisialisasi router
 router = APIRouter()
@@ -13,6 +14,8 @@ router = APIRouter()
 SECRET_KEY = "your_secret_key"  # Ganti dengan secret key yang aman
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 # Context hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -50,7 +53,7 @@ async def signup(user: UserSignup):
     # Cek apakah username sudah terdaftar
     existing_user = users_collection.find_one({"username": user.username})
     if existing_user:
-        raise HTTPException(status_code=400, detail="Username sudah terdaftar")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username sudah terdaftar")
 
     # Hash password
     hashed_password = pwd_context.hash(user.password)
@@ -63,16 +66,34 @@ async def signup(user: UserSignup):
 
     return {"message": "Akun berhasil dibuat"}
 
+async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> Dict:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if not isinstance(username, str):
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    user = users_collection.find_one({"username": username})
+    if user is None:
+        raise credentials_exception
+    return user
 
 # Endpoint login
 @router.post("/login", response_model=Token)
 async def login_for_access_token(form_data: UserLogin):
     user = users_collection.find_one({"username": form_data.username})
     if not user:
-        raise HTTPException(status_code=401, detail="Username tidak ditemukan")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Username tidak ditemukan")
     
     if not verify_password(form_data.password, user["password"]):
-        raise HTTPException(status_code=401, detail="Password salah")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Password salah")
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
