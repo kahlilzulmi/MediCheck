@@ -4,14 +4,14 @@ from pydantic import BaseModel
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from pymongo import MongoClient
+import os
 from typing import Dict
 
 # Inisialisasi router
 router = APIRouter()
 
 # Secret key dan algoritma untuk JWT
-SECRET_KEY = "your_secret_key"  # Ganti dengan secret key yang aman
+SECRET_KEY = os.getenv("SECRET_KEY", "a_default_secret_key_for_development")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -20,10 +20,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 # Context hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# MongoDB client
-client = MongoClient("mongodb://localhost:27017")
-db = client["medicheck"]
-users_collection = db["users"]
+from ..database import users_collection
 
 # Model input dan output
 class UserLogin(BaseModel):

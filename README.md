@@ -13,8 +13,7 @@ MediCheck is an interactive web application designed to predict potential diseas
 ## Tech Stack
 
 - **Frontend:** React.js (Vite), Tailwind CSS
-- **Backend:** FastAPI (Python) with a Large Language Model via Ollama using Gemma 3 model
-- **Backend:** FastAPI (Python) with a Large Language Model via Ollama using a Gemma model
+- **Backend:** FastAPI (Python 3.10) with a Large Language Model via Ollama using Gemma 3 model
 - **Database:** MongoDB
 
 ## Language Support
