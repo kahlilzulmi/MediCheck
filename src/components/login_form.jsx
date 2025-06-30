@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
+import api from "../services/api"; // Import the centralized API service
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -11,7 +11,8 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://api.testmedi.online/login", {
+      // Use the 'api' service, which handles the base URL automatically
+      const response = await api.post("/login", {
         username,
         password,
       });

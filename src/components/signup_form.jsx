@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api"; // Import the centralized API service
 
 const SignupForm = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +10,8 @@ const SignupForm = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://api.testmedi.online/signup", {
+      // Use the 'api' service for a consistent, environment-aware request
+      await api.post("/signup", {
         username,
         password,
       });

@@ -20,6 +20,11 @@ class Symptomclass(BaseModel):
     symptoms: List[str]
     suhu: Optional[float] = None
 
+class RiwayatItem(BaseModel):
+    tanggal: str
+    gejala: List[str]
+    prediksi: str
+
 @router.post("/predict")
 async def predict_with_llm(s: Symptomclass, current_user: Dict = Depends(get_current_active_user)):
     username = current_user["username"]
@@ -79,15 +84,15 @@ async def predict_with_llm(s: Symptomclass, current_user: Dict = Depends(get_cur
 
     return {"disease": record.result}
 
-@router.get("/riwayat")
+@router.get("/riwayat", response_model=List[RiwayatItem])
 async def get_riwayat(current_user: Dict = Depends(get_current_active_user)):
     username = current_user["username"]
-    records = list(predictions_collection.find({"username": username}).sort("timestamp", -1))
-    result = []
-    for rec in records:
-        result.append({
+    records = predictions_collection.find({"username": username}).sort("timestamp", -1)
+    return [
+        {
             "tanggal": rec.get("timestamp", "")[:10],
             "gejala": rec.get("symptoms", []),
             "prediksi": rec.get("result", "")
-        })
-    return result
+        }
+        for rec in records
+    ]

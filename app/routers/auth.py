@@ -31,11 +31,15 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class User(BaseModel):
+    username: str
+    device_address: str | None = None
+
 # Fungsi bantu
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=15)):
+def create_access_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()
     expire = datetime.utcnow() + expires_delta
     to_encode.update({"exp": expire})
@@ -82,6 +86,15 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> Dict:
         raise credentials_exception
     return user
 
+# Endpoint to get current user info
+@router.get("/users/me", response_model=User)
+async def read_users_me(current_user: Dict = Depends(get_current_active_user)):
+    """
+    Fetch the current logged in user's details.
+    """
+    # The Pydantic model will automatically validate and filter the returned data
+    return current_user
+
 # Endpoint login
 @router.post("/login", response_model=Token)
 async def login_for_access_token(form_data: UserLogin):
@@ -94,6 +107,6 @@ async def login_for_access_token(form_data: UserLogin):
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": form_data.username}, expires_delta=access_token_expires
+        data={"sub": user["username"]}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}

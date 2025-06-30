@@ -7,10 +7,16 @@ load_dotenv()
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173" # Your frontend's development server
+    # You can add your production frontend URL here as well
+    # e.g., "https://www.testmedi.online"
+]
+
 # Tambahkan ini untuk mengizinkan frontend mengakses backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://testmedi.online", "https://app.www.testmedi.online"],  # Sesuaikan dengan port React kamu
+    allow_origins=origins,  # Sesuaikan dengan port React kamu
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
