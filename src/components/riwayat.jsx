@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import api from "../services/api"; // Import the centralized API service
 
 function Riwayat() {
   const [history, setHistory] = useState([]);
@@ -8,21 +9,12 @@ function Riwayat() {
     async function fetchRiwayat() {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch("https://api.testmedi.online/riwayat", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!res.ok) {
-          // Tangani HTTP errors seperti 404 atau 500
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        console.log("Fetched history data:", data);
-        setHistory(data);
+        // Use the 'api' service, which handles the base URL and token automatically
+        const res = await api.get("/riwayat");
+        console.log("Fetched history data:", res.data);
+        setHistory(res.data);
       } catch (err) {
-        console.error("Failed to fetch history:", err);
+        console.error("Failed to fetch history:", err.response || err.message || err);
         setHistory([]);
       } finally {
         setLoading(false);
@@ -36,7 +28,6 @@ function Riwayat() {
       id="riwayat"
       className="flex flex-col items-center justify-start min-h-[calc(100vh-0px)] w-full px-6 py-10 bg-red-900 bg-opacity-70 scroll-mt-15"
     >
-
 
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-center text-white mb-6">

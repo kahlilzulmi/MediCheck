@@ -1,9 +1,9 @@
 import React from 'react';
 import LoginForm from '../components/login_form';
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   return(
-    <LoginForm/>
+    <LoginForm setIsAuthenticated={setIsAuthenticated} />
   )
 };
 

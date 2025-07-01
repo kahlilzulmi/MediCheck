@@ -8,7 +8,8 @@ load_dotenv()
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173" # Your frontend's development server
+    "http://localhost:5173", # Your frontend's development server
+    "http://127.0.0.1:5173" # Added to cover 127.0.0.1 variation for frontend
     # You can add your production frontend URL here as well
     # e.g., "https://www.testmedi.online"
 ]

@@ -13,7 +13,7 @@ router = APIRouter()
 # Secret key dan algoritma untuk JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "a_default_secret_key_for_development")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440 # Increased to 24 hours to prevent auto-logout
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
@@ -29,7 +29,6 @@ class UserLogin(BaseModel):
 
 class UserSignup(BaseModel):
     username: str
-    email: EmailStr
     password: str
 
 class Token(BaseModel):
@@ -60,17 +59,12 @@ async def signup(user: UserSignup):
     if users_collection.find_one({"username": user.username}):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username sudah terdaftar")
 
-    # Cek apakah email sudah terdaftar
-    if users_collection.find_one({"email": user.email}):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email sudah terdaftar")
-
     # Hash password
     hashed_password = pwd_context.hash(user.password)
 
     # Simpan ke MongoDB
     users_collection.insert_one({
         "username": user.username,
-        "email": user.email,
         "password": hashed_password
     })
 

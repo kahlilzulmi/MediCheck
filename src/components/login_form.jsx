@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { jwtDecode } from "jwt-decode";
 import api from "../services/api"; // Import the centralized API service
 
-const LoginForm = () => {
+const LoginForm = ({ setIsAuthenticated }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,8 +24,8 @@ const LoginForm = () => {
 
       const decoded = jwtDecode(token);
       localStorage.setItem("username", decoded.sub);
-
-      window.location.href = "/home";
+      setIsAuthenticated(true); // Update authentication state in App.jsx
+      navigate("/"); // Use navigate for client-side routing
     } catch (err) {
       console.error("Error details:", err.response || err.message || err);
       setError("Login gagal, silakan coba lagi.");

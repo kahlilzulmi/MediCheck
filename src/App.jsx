@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home.jsx';
-import Login from './pages/Login.jsx';
-import SignUp from './pages/Signup.jsx';
-import Riwayat from './pages/Riwayat.jsx';
-import Device from './pages/Device.jsx';
+import Home from './pages/home.jsx';
+import Login from './pages/login.jsx';
+import SignUp from './pages/signup.jsx';
+import Riwayat from './components/riwayat.jsx';
+import Device from './components/DeviceManager.jsx';
 import Account from './pages/Account.jsx'; // Import the new Account page
 import './App.css';
 
 function App() {
   // State to track if the user is authenticated
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Function to handle user logout
   const handleLogout = () => {
