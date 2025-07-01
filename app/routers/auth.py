@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 import os
-from typing import Dict
+from typing import Dict, Optional
 
 # Inisialisasi router
 router = APIRouter()
@@ -27,13 +27,22 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
+class UserSignup(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
-class User(BaseModel):
+class UserOut(BaseModel):
     username: str
-    device_address: str | None = None
+    email: EmailStr
+
+class UserInDB(UserOut):
+    password: str # This is the hashed password
+
 
 # Fungsi bantu
 def verify_password(plain_password, hashed_password):
@@ -45,16 +54,15 @@ def create_access_token(data: dict, expires_delta: timedelta):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-class UserSignup(BaseModel):
-    username: str
-    password: str
-
 @router.post("/signup")
 async def signup(user: UserSignup):
     # Cek apakah username sudah terdaftar
-    existing_user = users_collection.find_one({"username": user.username})
-    if existing_user:
+    if users_collection.find_one({"username": user.username}):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username sudah terdaftar")
+
+    # Cek apakah email sudah terdaftar
+    if users_collection.find_one({"email": user.email}):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email sudah terdaftar")
 
     # Hash password
     hashed_password = pwd_context.hash(user.password)
@@ -62,12 +70,13 @@ async def signup(user: UserSignup):
     # Simpan ke MongoDB
     users_collection.insert_one({
         "username": user.username,
+        "email": user.email,
         "password": hashed_password
     })
 
     return {"message": "Akun berhasil dibuat"}
 
-async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> Dict:
+async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> UserInDB:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -81,14 +90,14 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> Dict:
     except JWTError:
         raise credentials_exception
     
-    user = users_collection.find_one({"username": username})
-    if user is None:
+    user_doc = users_collection.find_one({"username": username})
+    if user_doc is None:
         raise credentials_exception
-    return user
+    return UserInDB(**user_doc)
 
 # Endpoint to get current user info
-@router.get("/users/me", response_model=User)
-async def read_users_me(current_user: Dict = Depends(get_current_active_user)):
+@router.get("/users/me", response_model=UserOut)
+async def read_users_me(current_user: UserInDB = Depends(get_current_active_user)):
     """
     Fetch the current logged in user's details.
     """

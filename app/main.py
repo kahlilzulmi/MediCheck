@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, predict, device
+from .routers import auth, predict, device, user
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -25,3 +25,4 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(predict.router)
 app.include_router(device.router)
+app.include_router(user.router)

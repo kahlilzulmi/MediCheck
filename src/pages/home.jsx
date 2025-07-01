@@ -4,10 +4,10 @@ import Riwayat from '../components/riwayat'
 import Footer from '../components/footer'
 import Hero from '../components/hero'
 
-function Home() {
+function Home({ onLogout }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header onLogout={onLogout} />
       <main className="flex-grow">
         <Hero />
         <Riwayat />
