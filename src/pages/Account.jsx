@@ -4,8 +4,8 @@ import api from '../services/api'; // Assuming an api helper for authenticated r
 import './Account.css'; // We'll create this for styling in the next step
 
 const Account = ({ onLogout }) => {
-    const [currentUser, setCurrentUser] = useState({ username: '', email: '' });
-    const [formData, setFormData] = useState({ username: '', email: '' });
+    const [currentUser, setCurrentUser] = useState({ username: '' });
+    const [formData, setFormData] = useState({ username: '' });
     const [notification, setNotification] = useState({ message: '', type: '' });
     const navigate = useNavigate();
 
@@ -36,9 +36,6 @@ const Account = ({ onLogout }) => {
         const updatedFields = {};
         if (formData.username.trim() && formData.username !== currentUser.username) {
             updatedFields.username = formData.username;
-        }
-        if (formData.email.trim() && formData.email !== currentUser.email) {
-            updatedFields.email = formData.email;
         }
 
         if (Object.keys(updatedFields).length === 0) {
@@ -83,6 +80,7 @@ const Account = ({ onLogout }) => {
 
     return (
         <div className="account-container">
+            <button onClick={() => navigate('/')} className="btn-back">Back to Home</button>
             <h2>Account Management</h2>
             
             {notification.message && (
@@ -97,10 +95,6 @@ const Account = ({ onLogout }) => {
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required />
                     </div>
                     <button type="submit" className="btn-update">Update Details</button>
                 </form>

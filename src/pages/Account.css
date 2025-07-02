@@ -1,95 +1,171 @@
+/* Account.css */
+
 .account-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    position: relative; /* For positioning the back button */
 }
 
 .account-container h2 {
     text-align: center;
-    color: #333;
-    margin-bottom: 2rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
 }
 
 .account-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    background-color: #f9f9f9;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
 }
 
 .account-section h3 {
+    color: #34495e;
     margin-top: 0;
-    color: #444;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    font-weight: 500;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+    margin-bottom: 8px;
+    font-weight: bold;
     color: #555;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 0.75rem;
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.btn-update, .btn-delete {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
 }
 
 .btn-update {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
     background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-update:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 .danger-zone {
-    border-color: #dc3545;
-    background-color: #f8d7da;
+    background-color: #ffebee;
+    border-color: #ef9a9a;
+    color: #c62828;
+}
+
+.danger-zone h3 {
+    color: #d32f2f;
+    border-bottom-color: #ef9a9a;
+}
+
+.danger-zone p {
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 .btn-delete {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
     background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-delete:hover {
     background-color: #c82333;
+    transform: translateY(-2px);
 }
 
 .notification {
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 4px;
-    color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: bold;
     text-align: center;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
-.notification.success { background-color: #28a745; }
-.notification.error { background-color: #dc3545; }
-.notification.info { background-color: #17a2b8; }
+.notification.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.notification.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.notification.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}

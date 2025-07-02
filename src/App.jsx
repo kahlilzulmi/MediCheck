@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/home.jsx';
 import Login from './pages/login.jsx';
@@ -10,8 +10,19 @@ import './App.css';
 
 function App() {
   // State to track if the user is authenticated
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem('token');
+  });
 
+  // Optional: Listen for token changes (e.g., from other tabs)
+  useEffect(() => {
+    const handleStorage = () => {
+      setIsAuthenticated(!!localStorage.getItem('token'));
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+  
   // Function to handle user logout
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -20,13 +31,18 @@ function App() {
   };
 
   // A component to wrap protected routes
-  const ProtectedRoute = ({ children }) => {
+  // It now directly renders children and expects onLogout to be passed if needed by the child
+  const ProtectedRoute = ({ children, onLogoutProp }) => {
     if (!isAuthenticated) {
       // Redirect them to the /login page
       return <Navigate to="/login" replace />;
     }
-    // Pass the onLogout function to the child component
-    return React.cloneElement(children, { onLogout: handleLogout });
+    // Pass onLogoutProp directly to the child if it's a React element and expects it
+    // This avoids React.cloneElement which can cause re-mounting issues
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, { onLogout: onLogoutProp });
+    }
+    return children;
   };
 
   return (
@@ -38,10 +54,11 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
 
           {/* Protected routes - Home is now at the root path */}
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/riwayat" element={<ProtectedRoute><Riwayat /></ProtectedRoute>} />
-          <Route path="/device" element={<ProtectedRoute><Device /></ProtectedRoute>} />
-          <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+          {/* Pass handleLogout directly to ProtectedRoute, which then passes it to the child */}
+          <Route path="/" element={<ProtectedRoute onLogoutProp={handleLogout}><Home /></ProtectedRoute>} />
+          <Route path="/riwayat" element={<ProtectedRoute onLogoutProp={handleLogout}><Riwayat /></ProtectedRoute>} />
+          <Route path="/device" element={<ProtectedRoute onLogoutProp={handleLogout}><Device /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute onLogoutProp={handleLogout}><Account /></ProtectedRoute>} />
 
           {/* Fallback/Redirect routes */}
           <Route path="/home" element={<Navigate to="/" />} /> {/* Redirect old /home to / */}

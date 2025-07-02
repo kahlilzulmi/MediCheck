@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, WebSocket, WebSocketDisconnect # Added WebSocket, WebSocketDisconnect
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 import os
 from typing import Dict, Optional
+from bson import ObjectId # Import ObjectId
 
 # Inisialisasi router
 router = APIRouter()
@@ -36,11 +37,23 @@ class Token(BaseModel):
     token_type: str
 
 class UserOut(BaseModel):
+    id: Optional[str] = None # Use 'id' for Pydantic, will map to '_id'
     username: str
-    email: EmailStr
+    email: Optional[EmailStr] = None
+    device_address: Optional[str] = None
+    registered_device: Optional[Dict] = None # Add this to handle the new device structure
+
+    class Config:
+        populate_by_name = True # Allow field mapping by name
+        arbitrary_types_allowed = True # Allow ObjectId type
+        json_encoders = {ObjectId: str} # Encode ObjectId to string for JSON output
+        extra = "allow" # Allow extra fields not defined in the model
 
 class UserInDB(UserOut):
     password: str # This is the hashed password
+
+    class Config(UserOut.Config): # Inherit from UserOut.Config
+        pass # No additional config needed, just inherit
 
 
 # Fungsi bantu
@@ -87,6 +100,39 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme)) -> UserIn
     user_doc = users_collection.find_one({"username": username})
     if user_doc is None:
         raise credentials_exception
+    
+    # Convert ObjectId to string for 'id' field in Pydantic model
+    user_doc["id"] = str(user_doc["_id"])
+    # Remove the original _id field to prevent serialization issues with extra fields
+    del user_doc["_id"]
+    
+    print(f"User document before Pydantic conversion: {user_doc}")
+    return UserInDB(**user_doc)
+
+async def get_user_from_websocket_token(websocket: WebSocket) -> UserInDB:
+    token = websocket.query_params.get("token")
+    if not token:
+        raise WebSocketDisconnect(code=status.WS_1008_POLICY_VIOLATION, reason="Authentication token missing.")
+    
+    credentials_exception = WebSocketDisconnect(
+        code=status.WS_1008_POLICY_VIOLATION,
+        reason="Could not validate credentials."
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if not isinstance(username, str):
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    user_doc = users_collection.find_one({"username": username})
+    if user_doc is None:
+        raise credentials_exception
+    
+    user_doc["id"] = str(user_doc["_id"])
+    del user_doc["_id"]
+    
     return UserInDB(**user_doc)
 
 # Endpoint to get current user info

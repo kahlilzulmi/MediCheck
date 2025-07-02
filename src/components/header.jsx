@@ -103,7 +103,7 @@ const Header = ({ onLogout }) => {
           className="fixed inset-0 flex items-center justify-center z-50"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
-          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg relative text-black">
+          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg relative text-black max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setDeviceModalOpen(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"

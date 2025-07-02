@@ -35,6 +35,7 @@ const DeviceManager = () => {
         setDevices([]);
         try {
             const response = await api.get('/device/scan');
+            console.log("Scan API response data:", response.data); // Log scan response
             setDevices(response.data);
             if (response.data.length === 0) {
                 setError('No devices found. Make sure your device is on and discoverable.');
@@ -48,8 +49,11 @@ const DeviceManager = () => {
     };
 
     const handleRegister = async (address) => {
+        console.log("Attempting to register device with address:", address); // Log address
+        console.log("Current devices state:", devices); // Log current devices state
         // Find the full device object from the list to get its name
         const deviceToRegister = devices.find(d => d.address === address);
+        console.log("Device found for registration:", deviceToRegister); // Log found device
         if (!deviceToRegister) {
             setError("Could not find device details to register.");
             return;

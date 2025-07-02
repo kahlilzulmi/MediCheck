@@ -7,9 +7,16 @@ import json
 from datetime import datetime
 from app.models.prediction import PredictionRecord
 from app.database import predictions_collection
-from app.routers.auth import get_current_active_user
-from app.utils.bluetooth_utils import get_temperature_from_device
-from typing import Dict
+from app.routers.auth import get_current_active_user, UserInDB
+from typing import List, Optional
+import httpx
+import os
+import json
+from datetime import datetime
+from app.models.prediction import PredictionRecord
+from app.database import predictions_collection
+from app.routers.auth import get_current_active_user, UserInDB
+from fastapi import APIRouter, Body, Depends, HTTPException, status # Re-import APIRouter, etc.
 
 router = APIRouter()
 
@@ -18,36 +25,20 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")  # Ganti dengan model Anda
 
 class Symptomclass(BaseModel):
     symptoms: List[str]
-    suhu: Optional[float] = None
+    suhu: float # Make suhu a required float
 
 class RiwayatItem(BaseModel):
     tanggal: str
     gejala: List[str]
     prediksi: str
+    
+# SuhuResponse and get_suhu endpoint are removed as they are no longer needed
+# for real-time temperature display (now handled by WebSocket) or prediction fallback.
 
 @router.post("/predict")
-async def predict_with_llm(s: Symptomclass, current_user: Dict = Depends(get_current_active_user)):
-    username = current_user["username"]
-    temperature = s.suhu
-
-    # If temperature is not provided, try fetching it from the registered device
-    if temperature is None:
-        if "device_address" in current_user and current_user["device_address"]:
-            target_address = current_user["device_address"]
-            print(f"Temperature not provided, attempting to fetch from device: {target_address}")
-            try:
-                suhu_str = await get_temperature_from_device(target_address)
-                try:
-                    temperature = float(suhu_str)
-                except ValueError:
-                    # This block is only entered if float() fails, so suhu_str is guaranteed to be defined.
-                    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Device returned non-numeric temperature: '{suhu_str}'")
-            except HTTPException as e:
-                # Re-raise exception from util with more context
-                raise HTTPException(status_code=e.status_code, detail=f"Could not fetch temperature. Error: {e.detail}")
-        else:
-            # No device registered and no temperature provided
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Temperature is required. Please provide it or register a device.")
+async def predict_with_llm(s: Symptomclass, current_user: UserInDB = Depends(get_current_active_user)):
+    username = current_user.username
+    temperature = s.suhu # Temperature is now a required field in the request body
 
     # Format prompt
     symptoms_str = ", ".join(s.symptoms)
@@ -85,14 +76,25 @@ async def predict_with_llm(s: Symptomclass, current_user: Dict = Depends(get_cur
     return {"disease": record.result}
 
 @router.get("/riwayat", response_model=List[RiwayatItem])
-async def get_riwayat(current_user: Dict = Depends(get_current_active_user)):
-    username = current_user["username"]
-    records = predictions_collection.find({"username": username}).sort("timestamp", -1)
-    return [
-        {
-            "tanggal": rec.get("timestamp", "")[:10],
-            "gejala": rec.get("symptoms", []),
-            "prediksi": rec.get("result", "")
-        }
-        for rec in records
-    ]
+async def get_riwayat(current_user: UserInDB = Depends(get_current_active_user)):
+    username = current_user.username
+    try:
+        records = predictions_collection.find({"username": username}).sort("timestamp", -1)
+        records_list = []
+        for rec in records:
+            # Ensure _id is converted to string if it exists, to prevent serialization issues
+            if "_id" in rec:
+                rec["_id"] = str(rec["_id"])
+            records_list.append(rec)
+
+        return [
+            {
+                "tanggal": str(rec.get("timestamp", ""))[:10], # Ensure it's a string before slicing
+                "gejala": list(rec.get("symptoms", [])), # Ensure it's a list
+                "prediksi": str(rec.get("result", "")) # Ensure it's a string
+            }
+            for rec in records_list
+        ]
+    except Exception as e:
+        print(f"Error fetching riwayat for user {username}: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to fetch history: {e}")
