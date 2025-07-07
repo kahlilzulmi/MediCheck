@@ -77,9 +77,6 @@ function SuhuCard({ onSuhuChange }) {
       <p style={{ fontSize: "2rem", margin: 0, color: "black" }}>
         {suhu ? suhu + " °C" : "-"}
       </p>
-      {(!user || (!user.registered_device && !user.device_address)) && (
-        <p style={{ fontSize: "0.8rem", color: "gray" }}>Belum ada perangkat terdaftar. Silakan hubungkan perangkat terlebih dahulu.</p>
-      )}
       {suhu === null && wsStatus && (
         <p style={{ fontSize: "0.8rem", color: "gray" }}>{wsStatus}</p>
       )}
