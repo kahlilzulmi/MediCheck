@@ -93,5 +93,5 @@ Kahlil Gibran Al Zulmi (5094221015)
 Annisa Azzahra Ramadhani (5049221019)  
   
 Medical Technology  
-Faculty Medicine and Health  
+Faculty of Medicine and Health  
 Insitut Teknologi Sepuluh Nopember
