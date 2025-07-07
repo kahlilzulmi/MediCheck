@@ -1,32 +1,43 @@
 import { useEffect, useState } from "react";
+import { useUser } from "./context/UserContext";
 
 function SuhuCard({ onSuhuChange }) {
+  const { user } = useUser();
   const [suhu, setSuhu] = useState(null);
-  const [wsStatus, setWsStatus] = useState("Connecting..."); // New state for WebSocket status
+  const [wsStatus, setWsStatus] = useState("");
+  const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setWsStatus("Authentication token not found. Please log in.");
+    // Only connect if device is registered
+    if (!user || (!user.registered_device && !user.device_address)) {
+      setSuhu(null);
+      setWsStatus("Belum ada perangkat terdaftar. Silakan hubungkan perangkat terlebih dahulu.");
+      if (ws) {
+        ws.close();
+        setWs(null);
+      }
       return;
     }
 
-    // Construct WebSocket URL with token for authentication
-    // Assuming FastAPI's Depends(get_current_active_user) for WebSockets expects token in query
-    const wsUrl = `ws://localhost:8000/device/ws/suhu?token=${token}`;
-    const ws = new WebSocket(wsUrl);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setWsStatus("Authentication token not found. Please log in.");
+      setSuhu(null);
+      return;
+    }
 
-    ws.onopen = () => {
-      console.log("WebSocket connection established.");
-      setWsStatus("Connected");
+    setWsStatus("Connecting...");
+    const wsUrl = `ws://localhost:8000/device/ws/suhu?token=${token}`;
+    const websocket = new WebSocket(wsUrl);
+    setWs(websocket);
+
+    websocket.onopen = () => {
+      setWsStatus("Terhubung ke perangkat.");
     };
 
-    ws.onmessage = (event) => {
+    websocket.onmessage = (event) => {
       const receivedSuhu = event.data;
-      console.log("Received suhu:", receivedSuhu);
-      setSuhu(receivedSuhu); // Display the received string directly
-
-      // If onSuhuChange is provided, parse to float and call it
+      setSuhu(receivedSuhu);
       if (onSuhuChange) {
         const suhuValue = parseFloat(receivedSuhu);
         if (!isNaN(suhuValue)) {
@@ -35,26 +46,22 @@ function SuhuCard({ onSuhuChange }) {
       }
     };
 
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      setWsStatus("Error connecting to device. Please ensure device is on and registered.");
-      setSuhu(null); // Clear temperature on error
+    websocket.onerror = (error) => {
+      setWsStatus("Gagal terhubung ke perangkat. Pastikan perangkat aktif dan terdaftar.");
+      setSuhu(null);
     };
 
-    ws.onclose = (event) => {
-      console.log("WebSocket connection closed:", event.code, event.reason);
-      setWsStatus("Disconnected. Attempting to reconnect...");
-      setSuhu(null); // Clear temperature on disconnect
-      // Optional: Implement a reconnect logic here if desired
-      // For simplicity, we're not implementing auto-reconnect in this example
+    websocket.onclose = (event) => {
+      setWsStatus("Koneksi perangkat terputus.");
+      setSuhu(null);
     };
 
-    // Cleanup function: close WebSocket when component unmounts
     return () => {
-      console.log("Closing WebSocket connection.");
-      ws.close();
+      websocket.close();
+      setWs(null);
     };
-  }, []); // Empty dependency array to ensure WebSocket is established only once on mount
+    // eslint-disable-next-line
+  }, [user && (user.registered_device || user.device_address)]);
 
   return (
     <div style={{
@@ -68,9 +75,14 @@ function SuhuCard({ onSuhuChange }) {
     }}>
       <h3 style={{color: "black"}}>Suhu Badan</h3>
       <p style={{ fontSize: "2rem", margin: 0, color: "black" }}>
-        {suhu ? suhu + " °C" : wsStatus}
+        {suhu ? suhu + " °C" : "-"}
       </p>
-      {suhu === null && <p style={{ fontSize: "0.8rem", color: "gray" }}>{wsStatus}</p>}
+      {(!user || (!user.registered_device && !user.device_address)) && (
+        <p style={{ fontSize: "0.8rem", color: "gray" }}>Belum ada perangkat terdaftar. Silakan hubungkan perangkat terlebih dahulu.</p>
+      )}
+      {suhu === null && wsStatus && (
+        <p style={{ fontSize: "0.8rem", color: "gray" }}>{wsStatus}</p>
+      )}
     </div>
   );
 }

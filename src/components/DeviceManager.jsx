@@ -1,33 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import api from '../services/api'; // Assuming you have a central API service
+import React, { useState } from 'react';
+import api from '../services/api';
+import { useUser } from '../context/UserContext';
 
 const DeviceManager = () => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { user, loading, error: userError, fetchUser, registerDevice, unregisterDevice } = useUser();
     const [isScanning, setIsScanning] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [isUnregistering, setIsUnregistering] = useState(false);
     const [devices, setDevices] = useState([]);
     const [error, setError] = useState('');
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                setIsLoading(true);
-                // This function assumes your api service attaches the auth token
-                const response = await api.get('/users/me');
-                setUser(response.data);
-                setError('');
-            } catch (err) {
-                setError('Failed to fetch user data. Please try logging in again.');
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchUser();
-    }, []); // The empty dependency array ensures this runs only once on mount
 
     const handleScan = async () => {
         setIsScanning(true);
@@ -35,46 +16,31 @@ const DeviceManager = () => {
         setDevices([]);
         try {
             const response = await api.get('/device/scan');
-            console.log("Scan API response data:", response.data); // Log scan response
             setDevices(response.data);
             if (response.data.length === 0) {
                 setError('No devices found. Make sure your device is on and discoverable.');
             }
         } catch (err) {
             setError('Failed to scan for devices. Please try again.');
-            console.error(err);
         } finally {
             setIsScanning(false);
         }
     };
 
     const handleRegister = async (address) => {
-        console.log("Attempting to register device with address:", address); // Log address
-        console.log("Current devices state:", devices); // Log current devices state
-        // Find the full device object from the list to get its name
         const deviceToRegister = devices.find(d => d.address === address);
-        console.log("Device found for registration:", deviceToRegister); // Log found device
         if (!deviceToRegister) {
             setError("Could not find device details to register.");
             return;
         }
-
         setIsRegistering(true);
         setError('');
         try {
-            // Send both address and name to the backend
-            const response = await api.post('/device/register', {
-                address: deviceToRegister.address,
-                name: deviceToRegister.name
-            });
-            // Update user state with the new registered_device object
-            setUser(prevUser => ({ ...prevUser, registered_device: response.data.registered_device }));
-            // Clear the device list now that registration is complete
+            await registerDevice(deviceToRegister.address, deviceToRegister.name);
             setDevices([]);
         } catch (err) {
             const errorMessage = err.response?.data?.detail || 'Failed to register the device. Please try again.';
             setError(errorMessage);
-            console.error(err);
         } finally {
             setIsRegistering(false);
         }
@@ -84,40 +50,30 @@ const DeviceManager = () => {
         setIsUnregistering(true);
         setError('');
         try {
-            await api.delete('/device/unregister');
-            // Update user state by creating a new user object without the device properties
-            setUser(prevUser => {
-                const { registered_device, device_address, ...rest } = prevUser;
-                return rest;
-            });
+            await unregisterDevice();
         } catch (err) {
             const errorMessage = err.response?.data?.detail || 'Failed to unregister the device. Please try again.';
             setError(errorMessage);
-            console.error(err);
         } finally {
             setIsUnregistering(false);
         }
     };
 
-    if (isLoading) {
+    if (loading) {
         return <div className="text-center p-4">Loading user information...</div>;
     }
 
     return (
         <div className="space-y-6">
             <h2 className="text-2xl font-bold text-center">Device Management</h2>
-            
-            {error && (
+            {(error || userError) && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <span className="block sm:inline">{error}</span>
+                    <span className="block sm:inline">{error || userError}</span>
                 </div>
             )}
-
-            {/* Check for the new `registered_device` object, with a fallback to the old `device_address` */}
             {user && (user.registered_device || user.device_address) ? (
                 <div className="p-4 border rounded-lg bg-gray-50 text-center">
                     <p className="text-gray-600">Registered Device:</p>
-                    {/* Display name if available */}
                     {user.registered_device?.name && (
                         <p className="text-xl font-bold">{user.registered_device.name}</p>
                     )}
@@ -142,7 +98,6 @@ const DeviceManager = () => {
                     </button>
                 </div>
             )}
-
             {devices.length > 0 && (
                 <div className="mt-6">
                     <h4 className="text-lg font-semibold mb-2">Available Devices:</h4>
