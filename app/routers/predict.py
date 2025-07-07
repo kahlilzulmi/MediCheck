@@ -42,7 +42,7 @@ async def predict_with_llm(s: Symptomclass, current_user: UserInDB = Depends(get
 
     # Format prompt
     symptoms_str = ", ".join(s.symptoms)
-    prompt = f"Dari gejala yang disebutkan: {symptoms_str}, dengan suhu {temperature}, apa penyakit yang paling mungkin? Berikan jawaban singkat dari yang paling mungkin, pisahkan dengan koma, dan jangan sertakan penjelasan apapun, hanya berikan jawaban penyakitnya. Jika tidak ada keluhan spesifik atau gejala tidak mengarah ke penyakit tertentu, jawab 'Anda sehat'. Jika tidak dapat mengidentifikasi penyakit, jawab 'Tidak diketahui'. Contoh: penyakit1, penyakit2, penyakit3"
+    prompt = f"Dari gejala yang disebutkan: {symptoms_str}, dengan suhu {temperature}, apa penyakit yang paling mungkin? Berikan jawaban singkat dari yang paling mungkin, pisahkan dengan koma, dan jangan sertakan penjelasan apapun, hanya berikan jawaban penyakitnya. Jika gejala yang diberikan saling bertentangan atau tidak masuk akal (misalnya, 'tidak sakit tapi pinggang sakit'), jawab 'Gejala tidak konsisten, mohon klarifikasi.'. Jika tidak ada keluhan spesifik atau gejala tidak mengarah ke penyakit tertentu, jawab 'Anda sehat'. Jika tidak dapat mengidentifikasi penyakit, jawab 'Tidak diketahui'. Contoh: penyakit1, penyakit2, penyakit3"
 
     # Call Ollama LLM using /api/generate (not /api/chat)
     payload = {
