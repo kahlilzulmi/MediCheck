@@ -23,7 +23,7 @@ function Riwayat() {
                 <th className="py-3 px-6 text-left">Prediksi Penyakit</th>
               </tr>
             </thead>
-            <tbody className="text-white">
+            <tbody className="text-gray-900">
               {loading ? (
                 <tr key="loading" className="bg-red-500/30 backdrop-blur-md border-b border-red-200">
                   <td colSpan="4" className="text-center py-6">Memuat data...</td>
