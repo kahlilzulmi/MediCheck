@@ -65,7 +65,7 @@ const DeviceManager = () => {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-center">Device Management</h2>
+            <h2 className="text-2xl font-bold text-center">Manajemen Perangkat</h2>
             {(error || userError) && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <span className="block sm:inline">{error || userError}</span>
@@ -73,7 +73,7 @@ const DeviceManager = () => {
             )}
             {user && (user.registered_device || user.device_address) ? (
                 <div className="p-4 border rounded-lg bg-gray-50 text-center">
-                    <p className="text-gray-600">Registered Device:</p>
+                    <p className="text-gray-600">Perangkat Terpasang:</p>
                     {user.registered_device?.name && (
                         <p className="text-xl font-bold">{user.registered_device.name}</p>
                     )}
@@ -83,29 +83,29 @@ const DeviceManager = () => {
                         disabled={isUnregistering}
                         className="mt-4 w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-700 transition disabled:bg-gray-400"
                     >
-                        {isUnregistering ? 'Unregistering...' : 'Unregister Device'}
+                        {isUnregistering ? 'Melupakan...' : 'Melupakan perangkat...'}
                     </button>
                 </div>
             ) : (
                 <div className="p-4 border rounded-lg bg-gray-50 text-center">
-                    <p className="mb-4">No device is registered.</p>
+                    <p className="mb-4">Tiada perangkat terpasang.</p>
                     <button 
                         onClick={handleScan} 
                         disabled={isScanning}
                         className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
                     >
-                        {isScanning ? 'Scanning...' : 'Scan for New Devices'}
+                        {isScanning ? 'Memindai...' : 'Pindai Perangkat Baru'}
                     </button>
                 </div>
             )}
             {devices.length > 0 && (
                 <div className="mt-6">
-                    <h4 className="text-lg font-semibold mb-2">Available Devices:</h4>
+                    <h4 className="text-lg font-semibold mb-2">Perangkat Tersedia:</h4>
                     <ul className="space-y-2">
                         {devices.map((device) => (
                             <li key={device.address} className="flex items-center justify-between p-3 border rounded-lg">
                                 <div>
-                                    <p className="font-semibold">{device.name || 'Unknown Device'}</p>
+                                    <p className="font-semibold">{device.name || 'Perangkat Tidak Dikenal'}</p>
                                     <p className="text-sm text-gray-500 font-mono">{device.address}</p>
                                 </div>
                                 <button
@@ -113,7 +113,7 @@ const DeviceManager = () => {
                                     disabled={isRegistering}
                                     className="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 transition disabled:bg-gray-400 text-sm"
                                 >
-                                    {isRegistering ? 'Registering...' : 'Register'}
+                                    {isRegistering ? 'Memasangkan...' : 'Pasang'}
                                 </button>
                             </li>
                         ))}
