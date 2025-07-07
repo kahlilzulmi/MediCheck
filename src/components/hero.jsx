@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import api from "../services/api"; // Import the new centralized API service
 import SymptomForm from "./form";
+import { useUser } from "../context/UserContext";
 
 const Hero = () => {
   const [result, setResult] = useState("");
+  const { refreshAll } = useUser(); // Access refreshAll from UserContext
 
   const handleSubmit = async (data) => {
     try {
       // The api service now handles the URL and token automatically
       const response = await api.post("/predict", data);
       setResult(response.data.disease || "Tidak diketahui");
+      // After successful prediction, refresh the riwayat data
+      refreshAll(); 
     } catch (error) {
       console.error(error);
       // Display a more specific error message from the backend if available
