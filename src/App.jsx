@@ -7,6 +7,10 @@ import SignUp from './pages/signup.jsx';
 import Riwayat from './components/riwayat.jsx';
 import Device from './components/DeviceManager.jsx';
 import Account from './pages/Account.jsx';
+import PanduanPengguna from './pages/PanduanPengguna.jsx';
+import FAQ from './pages/FAQ.jsx';
+import TentangKami from './pages/TentangKami.jsx';
+import HubungiKami from './pages/HubungiKami.jsx';
 import { UserProvider } from './context/UserContext.jsx';
 import './App.css';
 
@@ -43,6 +47,10 @@ function App() {
             <Route path="/riwayat" element={<ProtectedRoute onLogoutProp={handleLogout}><Riwayat /></ProtectedRoute>} />
             <Route path="/device" element={<ProtectedRoute onLogoutProp={handleLogout}><Device /></ProtectedRoute>} />
             <Route path="/account" element={<ProtectedRoute onLogoutProp={handleLogout}><Account /></ProtectedRoute>} />
+            <Route path="/panduan-pengguna" element={<ProtectedRoute onLogoutProp={handleLogout}><PanduanPengguna /></ProtectedRoute>} />
+            <Route path="/faq" element={<ProtectedRoute onLogoutProp={handleLogout}><FAQ /></ProtectedRoute>} />
+            <Route path="/tentang-kami" element={<ProtectedRoute onLogoutProp={handleLogout}><TentangKami /></ProtectedRoute>} />
+            <Route path="/hubungi-kami" element={<ProtectedRoute onLogoutProp={handleLogout}><HubungiKami /></ProtectedRoute>} />
             <Route path="/home" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
           </Routes>

@@ -26,7 +26,7 @@ const Header = ({ onLogout }) => {
     }
     navigate("/login"); // Redirect to login after logout
   };
-
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -78,12 +78,12 @@ const Header = ({ onLogout }) => {
               {menuOpen && username && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg p-4 z-50">
                   <div className="font-medium mb-2">{username}</div>
-                  <Link
-                    to="/account"
-                    className="px-4 text-gray-600 hover:text-blue-500"
+                  <button
+                    onClick={() => navigate("/account")}
+                    className="w-full text-left px-2 py-2 text-sm text-black hover:bg-gray-100 rounded"
                   >
-                    My Account
-                  </Link>
+                    Pengaturan Akun
+                  </button>
                   <button
                     onClick={handleLogoutClick} // Use the correct logout handler
                     className="w-full text-left px-2 py-2 text-sm text-red-600 hover:bg-gray-100 rounded"

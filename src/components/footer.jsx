@@ -13,15 +13,15 @@ function Footer() {
         <div>
           <h5 className="text-[var(--primary-red)] font-semibold mb-2">Sumber Daya</h5>
           <ul className="space-y-1 text-sm">
-            <li><a href="#" className="hover:underline">Panduan Pengguna</a></li>
-            <li><a href="#" className="hover:underline">FAQ</a></li>
+            <li><a href="/panduan-pengguna" className="hover:underline">Panduan Pengguna</a></li>
+            <li><a href="/faq" className="hover:underline">FAQ</a></li>
           </ul>
         </div>
         <div>
           <h5 className="text-[var(--primary-red)] font-semibold mb-2">Developer</h5>
           <ul className="space-y-1 text-sm">
-            <li><a href="#" className="hover:underline">Tentang Kami</a></li>
-            <li><a href="#" className="hover:underline">Hubungi Kami</a></li>
+            <li><a href="/tentang-kami" className="hover:underline">Tentang Kami</a></li>
+            <li><a href="/hubungi-kami" className="hover:underline">Hubungi Kami</a></li>
           </ul>
         </div>
         <div>

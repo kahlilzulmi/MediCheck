@@ -6,6 +6,11 @@ import './Account.css'; // We'll create this for styling in the next step
 const Account = ({ onLogout }) => {
     const [currentUser, setCurrentUser] = useState({ username: '' });
     const [formData, setFormData] = useState({ username: '' });
+    const [passwordForm, setPasswordForm] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+    });
     const [notification, setNotification] = useState({ message: '', type: '' });
     const navigate = useNavigate();
 
@@ -16,8 +21,17 @@ const Account = ({ onLogout }) => {
                 setCurrentUser(response.data);
                 setFormData(response.data);
             } catch (error) {
-                console.error("Failed to fetch user data:", error);
-                setNotification({ message: 'Failed to load user data.', type: 'error' });
+                console.error("Gagal mengambil data pengguna:", error);
+                console.error("Detail kesalahan:", error.response || error.message); // Log response for more details
+                if (error.response && error.response.status === 401) {
+                    setNotification({ message: 'Sesi Anda telah berakhir. Silakan masuk kembali.', type: 'error' });
+                    setTimeout(() => {
+                        onLogout();
+                        navigate('/login');
+                    }, 2000);
+                } else {
+                    setNotification({ message: 'Gagal memuat data pengguna.', type: 'error' });
+                }
             }
         };
         fetchUser();
@@ -28,60 +42,114 @@ const Account = ({ onLogout }) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordForm(prev => ({ ...prev, [name]: value }));
+    };
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         setNotification({ message: '', type: '' });
 
-        // Only include fields that have actually changed
-        const updatedFields = {};
-        if (formData.username.trim() && formData.username !== currentUser.username) {
-            updatedFields.username = formData.username;
-        }
+        const trimmedUsername = formData.username.trim();
 
-        if (Object.keys(updatedFields).length === 0) {
-            setNotification({ message: 'No changes to update.', type: 'info' });
+        if (!trimmedUsername) {
+            setNotification({ message: 'Nama pengguna tidak boleh kosong.', type: 'error' });
             return;
         }
 
+        // Jika username tidak berubah, tidak perlu memperbarui
+        if (trimmedUsername === currentUser.username) {
+            setNotification({ message: 'Tidak ada perubahan untuk diperbarui.', type: 'info' });
+            return;
+        }
+
+        // Buat payload hanya dengan username yang diperbarui
+        const payload = { username: trimmedUsername };
+
         try {
-            await api.put('/users/me', updatedFields);
-            setNotification({ message: 'Account updated successfully! Please log in again with your new details.', type: 'success' });
+            await api.put('/users/me', payload);
+            setNotification({ message: 'Akun berhasil diperbarui! Silakan masuk kembali dengan detail baru Anda.', type: 'success' });
             
-            // Force logout to re-authenticate with new details, especially if username changed
+            // Paksa logout untuk otentikasi ulang dengan detail baru, terutama jika nama pengguna berubah
             setTimeout(() => {
                 onLogout();
                 navigate('/login');
             }, 3000);
 
         } catch (error) {
-            const errorMessage = error.response?.data?.detail || 'An error occurred during update.';
+            const errorMessage = error.response?.data?.detail || 'Terjadi kesalahan saat memperbarui.';
             setNotification({ message: errorMessage, type: 'error' });
         }
     };
 
     const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete your account? This action is irreversible and will remove all your data.')) {
+        if (window.confirm('Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat diubah dan akan menghapus semua data Anda.')) {
             try {
                 await api.delete('/users/me');
-                setNotification({ message: 'Account deleted successfully.', type: 'success' });
+                setNotification({ message: 'Akun berhasil dihapus.', type: 'success' });
                 
-                // Force logout and redirect to home
+                // Paksa logout dan arahkan ke beranda
                 setTimeout(() => {
                     onLogout();
                     navigate('/');
                 }, 2000);
 
             } catch (error) {
-                const errorMessage = error.response?.data?.detail || 'Failed to delete account.';
+                const errorMessage = error.response?.data?.detail || 'Gagal menghapus akun.';
                 setNotification({ message: errorMessage, type: 'error' });
             }
         }
     };
 
+    const handlePasswordUpdate = async (e) => {
+        e.preventDefault();
+        setNotification({ message: '', type: '' });
+
+        const { currentPassword, newPassword, confirmNewPassword } = passwordForm;
+
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            setNotification({ message: 'Semua bidang kata sandi harus diisi.', type: 'error' });
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            setNotification({ message: 'Kata sandi baru dan konfirmasi kata sandi tidak cocok.', type: 'error' });
+            return;
+        }
+
+        if (newPassword.length < 6) { // Example: minimum password length
+            setNotification({ message: 'Kata sandi baru harus minimal 6 karakter.', type: 'error' });
+            return;
+        }
+
+        try {
+            // Assuming a separate endpoint for password change, e.g., /users/me/password or /auth/change-password
+            await api.put('/users/me/password', {
+                current_password: currentPassword,
+                new_password: newPassword
+            });
+            setNotification({ message: 'Kata sandi berhasil diperbarui! Silakan masuk kembali dengan kata sandi baru Anda.', type: 'success' });
+            
+            // Clear password fields
+            setPasswordForm({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
+
+            // Force logout for re-authentication with new password
+            setTimeout(() => {
+                onLogout();
+                navigate('/login');
+            }, 3000);
+
+        } catch (error) {
+            const errorMessage = error.response?.data?.detail || 'Terjadi kesalahan saat memperbarui kata sandi.';
+            setNotification({ message: errorMessage, type: 'error' });
+        }
+    };
+
     return (
         <div className="account-container">
-            <button onClick={() => navigate('/')} className="btn-back">Back to Home</button>
-            <h2>Account Management</h2>
+            <button onClick={() => navigate('/')} className="btn-back">Kembali ke Beranda</button>
+            <h2>Manajemen Akun</h2>
             
             {notification.message && (
                 <div className={`notification ${notification.type}`}>
@@ -90,20 +158,39 @@ const Account = ({ onLogout }) => {
             )}
 
             <div className="account-section">
-                <h3>Update Your Details</h3>
+                <h3>Perbarui Detail Anda</h3>
                 <form onSubmit={handleUpdate}>
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username">Nama Pengguna</label>
                         <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required />
                     </div>
-                    <button type="submit" className="btn-update">Update Details</button>
+                    <button type="submit" className="btn-update">Perbarui Detail</button>
+                </form>
+            </div>
+
+            <div className="account-section">
+                <h3>Perbarui Kata Sandi</h3>
+                <form onSubmit={handlePasswordUpdate}>
+                    <div className="form-group">
+                        <label htmlFor="currentPassword">Kata Sandi Saat Ini</label>
+                        <input type="password" id="currentPassword" name="currentPassword" value={passwordForm.currentPassword} onChange={handlePasswordChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="newPassword">Kata Sandi Baru</label>
+                        <input type="password" id="newPassword" name="newPassword" value={passwordForm.newPassword} onChange={handlePasswordChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmNewPassword">Konfirmasi Kata Sandi Baru</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" value={passwordForm.confirmNewPassword} onChange={handlePasswordChange} required />
+                    </div>
+                    <button type="submit" className="btn-update">Perbarui Kata Sandi</button>
                 </form>
             </div>
 
             <div className="account-section danger-zone">
-                <h3>Danger Zone</h3>
-                <p>Deleting your account will permanently remove all your data, including your prediction history.</p>
-                <button onClick={handleDelete} className="btn-delete">Delete My Account</button>
+                <h3>Zona Bahaya</h3>
+                <p>Menghapus akun Anda akan secara permanen menghapus semua data Anda, termasuk riwayat prediksi Anda.</p>
+                <button onClick={handleDelete} className="btn-delete">Hapus Akun Saya</button>
             </div>
         </div>
     );
