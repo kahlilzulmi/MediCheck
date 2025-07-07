@@ -81,3 +81,17 @@ This project includes an Arduino IDE sketch for ESP32 to read temperature data f
 ## Demo Video
 
 [![Demo Pemrograman Web Kelompok 2](https://img.youtube.com/vi/wMEEadna3kM/0.jpg)](https://www.youtube.com/watch?v=wMEEadna3kM)
+
+## Brought to you by
+
+### Kelompok 2
+
+Vladizya Vlaztadyandra (5049221002)  
+Abdurrahman Mubarak (5049221005)  
+Afifa Az Zahra Salsabila (5049221009)  
+Kahlil Gibran Al Zulmi (5094221015)  
+Annisa Azzahra Ramadhani (5049221019)  
+  
+Medical Technology  
+Faculty Medicine and Health  
+Insitut Teknologi Sepuluh Nopember
