@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SuhuCard from "../SuhuCard";
 
-function SymptomForm({ onSubmit, onSymptomChange, result }) {
+function SymptomForm({ onSubmit, onSymptomChange, result, loading }) {
   const [symptomInput, setSymptomInput] = useState("");
   const [suhu, setSuhu] = useState(null);
 
@@ -54,8 +54,13 @@ function SymptomForm({ onSubmit, onSymptomChange, result }) {
         </button>
 
       </form>
-      {/* Tampilkan hasil prediksi di bawah tombol jika ada */}
-      {result && (
+      {/* Tampilkan hasil prediksi atau animasi loading */}
+      {loading && (
+        <div className="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+          <p>Hasil Prediksi: <strong>Memuat...</strong></p>
+        </div>
+      )}
+      {!loading && result && (
         <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
           <p>Hasil Prediksi: <strong>{result}</strong></p>
         </div>

@@ -5,9 +5,12 @@ import { useUser } from "../context/UserContext";
 
 const Hero = () => {
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false); // New loading state
   const { refreshAll } = useUser(); // Access refreshAll from UserContext
 
   const handleSubmit = async (data) => {
+    setLoading(true); // Set loading to true when prediction starts
+    setResult(""); // Clear previous result
     try {
       // The api service now handles the URL and token automatically
       const response = await api.post("/predict", data);
@@ -21,6 +24,8 @@ const Hero = () => {
         error.response?.data?.detail ||
         "Gagal memprediksi. Cek gejala atau API.";
       setResult(errorMessage);
+    } finally {
+      setLoading(false); // Set loading to false when prediction ends
     }
   };
 
@@ -47,7 +52,7 @@ const Hero = () => {
           cerdas.
         </p>
 
-        <SymptomForm onSubmit={handleSubmit} result={result} />
+        <SymptomForm onSubmit={handleSubmit} result={result} loading={loading} />
       </div>
     </section>
   );
