@@ -1,6 +1,6 @@
 # MediCheck - Smart Disease Prediction Website
 
-MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. Utilizing a machine learning model, the system delivers real-time predictions accompanied by a confidence score that indicates the model's certainty.
+MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. Utilizing a rule-based algorithm and a LLM model, the system delivers real-time predictions accompanied by a confidence score that indicates the model's certainty.
 
 ## Key Features
 
@@ -84,14 +84,14 @@ This project includes an Arduino IDE sketch for ESP32 to read temperature data f
 
 ## Brought to you by
 
-### Kelompok 2
+### Group 2 of Web Programming for Medical Application course
 
-Vladizya Vlaztadyandra (5049221002)  
-Abdurrahman Mubarak (5049221005)  
-Afifa Az Zahra Salsabila (5049221009)  
-Kahlil Gibran Al Zulmi (5094221015)  
-Annisa Azzahra Ramadhani (5049221019)  
+Vladizya Vlaztadyandra (5049221002) - UI/ UX Designer  
+Abdurrahman Mubarak (5049221005) - Backend & AI Engineer  
+Afifa Az Zahra Salsabila (5049221009) - Project Coordinator    
+Kahlil Gibran Al Zulmi (5094221015) - IoT & Integration Engineer  
+Annisa Azzahra Ramadhani (5049221019) - UI/UX and Frontend Developer 
   
-Medical Technology  
+Study Program of Medical Technology  
 Faculty of Medicine and Health  
 Insitut Teknologi Sepuluh Nopember
