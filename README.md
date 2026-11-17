@@ -86,14 +86,14 @@ This project includes an Arduino IDE sketch for ESP32 to read temperature data f
 
 ## Brought to you by
 
-### Group 2 of Web Programming for Medical Application course
+### Group 2 of Web Programming for Medical Application course  
 
-Vladizya Vlaztadyandra (5049221002) - UI/UX Designer  
-Abdurrahman Mubarak (5049221005) - Backend & AI Engineer  
-Afifa Az Zahra Salsabila (5049221009) - Project Coordinator    
-Kahlil Gibran Al Zulmi (5094221015) - IoT & Integration Engineer  
-Annisa Azzahra Ramadhani (5049221019) - UI/UX and Frontend Developer 
+Vladizya Vlaztadyandra - UI/UX Designer  
+Abdurrahman Mubarak - Backend & AI Engineer  
+Afifa Az Zahra Salsabila - Project Coordinator  
+Kahlil Gibran Al Zulmi - IoT & Integration Engineer  
+Annisa Azzahra Ramadhani - UI/UX and Frontend Developer  
   
 Study Program of Medical Technology  
 Faculty of Medicine and Health  
-Insitut Teknologi Sepuluh Nopember
+Institut Teknologi Sepuluh Nopember
