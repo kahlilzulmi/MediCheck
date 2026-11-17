@@ -1,14 +1,14 @@
 # MediCheck - Smart Disease Prediction Website
 
-MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. Utilizing a rule-based algorithm and a LLM model, the system delivers real-time predictions accompanied by a confidence score that indicates the model's certainty.  
+MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. The symptoms, together with the body temperature read from an ESP32 sensor, are sent to a locally hosted Large Language Model (Gemma 3 via Ollama), which returns a short list of the most likely diseases, ordered from most to least likely.  
 
 **DISCLAIMER:** This is a prototype, NOT a medical device.  
 
 ## Key Features
 
 - **Symptom Input in Bahasa Indonesia:** Allows users to input symptoms in Indonesian, with predictions returned instantly.
-- **Confidence Scores:** Provides a confidence score for each prediction, reflecting the reliability of the results.
-- **Detailed Disease Information:** Offers additional information on predicted diseases, including common symptoms, treatment options, and prevention tips.
+- **Ranked Predictions:** Returns the most likely diseases ordered from most to least likely, and flags inconsistent or non-specific symptoms instead of forcing a diagnosis.
+- **Body Temperature Input:** Includes body temperature from an ESP32 + DS18B20 sensor (via Bluetooth) as part of the prediction input.
 - **User History (Login Required):** Maintains a history of user symptom checks and predictions, accessible after logging in.
 - **Responsive Interface:** Features a user-friendly interface built with React and Tailwind CSS for optimal viewing on various devices.
 
