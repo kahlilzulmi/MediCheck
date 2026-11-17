@@ -1,6 +1,8 @@
 # MediCheck - Smart Disease Prediction Website
 
-MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. Utilizing a rule-based algorithm and a LLM model, the system delivers real-time predictions accompanied by a confidence score that indicates the model's certainty.
+MediCheck is an interactive web application designed to predict potential diseases based on user-provided symptoms. Utilizing a rule-based algorithm and a LLM model, the system delivers real-time predictions accompanied by a confidence score that indicates the model's certainty.  
+
+**DISCLAIMER:** This a prototype, NOT a medical device.  
 
 ## Key Features
 
